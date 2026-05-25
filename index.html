@@ -4,34 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Ocean Explorers 🌊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%}
 body{
-  background:#0a1a28;
+  background:#0A4050;
   display:flex;align-items:center;justify-content:center;
   min-height:100vh;min-height:100dvh;
   height:100%;overflow:hidden;
-  font-family:'Arial Rounded MT Bold',Arial,sans-serif;
+  font-family:'Fredoka One','Arial Rounded MT Bold',cursive;
   user-select:none;
-  /* iOS notch / home indicator safe area */
   padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
           env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);
 }
 #wrapper{
   position:relative;
-  /* min() of: max canvas width | viewport width | height-derived width
-     — this stops the canvas overflowing vertically on landscape phones */
   width:min(900px, 100vw, calc(100dvh * 900 / 560));
   aspect-ratio:900/560;
 }
-/* Fallback for older browsers without dvh: JS sets --appH */
 @supports not (height:100dvh){
   #wrapper{width:min(900px,100vw,calc(var(--appH,100vh) * 900 / 560))}
 }
 canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;touch-action:none}
 
-/* ── PORTRAIT: top-align the game so it sits at the top of a tall phone screen ── */
 @media(orientation:portrait){
   body{align-items:flex-start}
   #wrapper{margin-top:max(env(safe-area-inset-top,0px),8px)}
@@ -41,29 +39,35 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 .overlay{
   position:absolute;inset:0;
   display:none;align-items:center;justify-content:center;
-  border-radius:14px;
+  border-radius:14px;overflow:hidden;
 }
 .overlay.show{display:flex}
 
 /* ── PASSPORT ── */
 #oPassport{
-  background:linear-gradient(160deg,#0d3858 0%,#1a5f80 50%,#0d3858 100%);
+  background:linear-gradient(160deg,#0A4E68 0%,#117B9B 50%,#0A4E68 100%);
   flex-direction:column;gap:0;
 }
 .passport-book{
-  background:linear-gradient(145deg,#284e18,#1a3210);
-  border:4px solid #8a6c28;
+  background:#FFF1DC;
+  border:4px solid #2E4C33;
   border-radius:10px 22px 22px 10px;
   padding:28px 38px 32px;
   text-align:center;
-  box-shadow:10px 10px 40px rgba(0,0,0,.5),inset 0 0 50px rgba(240,210,120,.05);
+  box-shadow:12px 12px 40px rgba(0,0,0,.4),inset 0 0 60px rgba(255,241,220,.2);
   max-width:400px;width:88%;
 }
-.p-title{color:#d8b050;font-size:clamp(1.4rem,4vw,2.1rem);font-weight:900;line-height:1.2;text-shadow:2px 2px 6px rgba(0,0,0,.45)}
-.p-sub{color:#80b880;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;margin:8px 0 14px}
+.p-title{color:#2E4C33;font-size:clamp(1.4rem,4vw,2.1rem);line-height:1.2}
+.p-sub{
+  color:#117B9B;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;margin:8px 0 14px;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+}
 .p-emblem{font-size:clamp(3rem,8vw,4.5rem);margin:4px 0 14px}
-.p-desc{color:#b0d0a0;font-size:.88rem;line-height:1.55}
-.p-tap{color:#d8b050;font-size:.9rem;margin-top:18px;animation:blink 1.6s ease-in-out infinite}
+.p-desc{
+  color:#4A4A4A;font-size:.88rem;line-height:1.6;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+}
+.p-tap{color:#117B9B;font-size:.9rem;margin-top:18px;animation:blink 1.6s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* ── HUD ── */
@@ -73,22 +77,21 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 }
 #hud.show{display:flex}
 .slot{
-  /* 44px minimum touch target (Apple HIG) */
   width:44px;height:44px;border-radius:50%;
-  border:2px solid rgba(255,255,255,.28);
-  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,241,220,.3);
+  background:rgba(255,241,220,.1);
   display:flex;align-items:center;justify-content:center;
   font-size:1.2rem;transition:all .35s;
 }
-.slot.on{background:rgba(60,190,140,.22);border-color:#40c898;box-shadow:0 0 12px rgba(60,190,140,.45)}
+.slot.on{background:rgba(78,250,150,.2);border-color:#4EFA96;box-shadow:0 0 14px rgba(78,250,150,.5)}
 #shellBtn{
   position:absolute;top:8px;right:10px;
   width:50px;height:50px;border-radius:50%;
-  background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.22);
+  background:rgba(255,241,220,.12);border:2px solid rgba(255,241,220,.25);
   display:none;align-items:center;justify-content:center;
   font-size:1.6rem;cursor:pointer;z-index:10;transition:background .2s;
 }
-#shellBtn:hover,#shellBtn:active{background:rgba(255,255,255,.24)}
+#shellBtn:hover,#shellBtn:active{background:rgba(255,241,220,.26)}
 #shellBtn.show{display:flex}
 
 /* ── TINO BUBBLE ── */
@@ -100,14 +103,17 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 #tinoPanel.show{display:flex}
 .tino-av{font-size:clamp(1.8rem,4vw,2.8rem);flex-shrink:0}
 .tino-bub{
-  background:rgba(248,248,244,.96);border-radius:20px 20px 20px 4px;
-  padding:9px 13px;color:#102030;font-size:clamp(.74rem,1.2vw,.9rem);line-height:1.45;
-  box-shadow:0 4px 16px rgba(0,0,0,.28);max-width:340px;
+  background:#FFF1DC;border-radius:20px 20px 20px 4px;
+  padding:9px 13px;color:#2E4C33;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.74rem,1.2vw,.9rem);line-height:1.5;
+  box-shadow:0 4px 16px rgba(10,60,80,.3);max-width:340px;
+  border:1px solid rgba(46,76,51,.12);
 }
 
 /* ── STAMP SCREEN ── */
 #oStamp{
-  background:rgba(8,20,38,.92);
+  background:rgba(10,60,80,.94);
   flex-direction:column;gap:clamp(10px,2vh,16px);text-align:center;
   padding:clamp(14px,3vh,28px);
 }
@@ -118,106 +124,155 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   transition:transform .6s cubic-bezier(.34,1.56,.64,1),opacity .35s;
 }
 #stampEmoji.drop{transform:translateY(0);opacity:1}
-.stamp-h{color:#d8b050;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;text-shadow:0 0 20px rgba(216,176,80,.6)}
-.stamp-p{color:#90c0a0;font-size:clamp(.8rem,1.2vw,.95rem);line-height:1.5;max-width:380px}
-.btn{
-  background:#d8b050;color:#1a2808;border:none;
-  /* 44px min touch height */
-  padding:clamp(11px,2vh,13px) clamp(22px,4vw,30px);border-radius:30px;
-  font-size:clamp(.88rem,1.2vw,1rem);font-weight:700;cursor:pointer;
-  box-shadow:0 4px 14px rgba(216,176,80,.35);transition:transform .15s,box-shadow .15s;
-  font-family:inherit;min-height:44px;
+.stamp-h{
+  color:#FFF1DC;font-size:clamp(1.2rem,3vw,2rem);
+  text-shadow:0 0 20px rgba(255,241,220,.45);
 }
-.btn:hover,.btn:active{transform:scale(1.05);box-shadow:0 6px 18px rgba(216,176,80,.5)}
-.btn.sec{background:rgba(255,255,255,.13);color:#e8eef5;box-shadow:none}
-.btn.sec:hover,.btn.sec:active{background:rgba(255,255,255,.22)}
+.stamp-p{
+  color:rgba(255,241,220,.85);
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.8rem,1.2vw,.95rem);line-height:1.5;max-width:380px;
+}
+.btn{
+  background:#117B9B;color:#FFF1DC;border:none;
+  padding:clamp(11px,2vh,13px) clamp(22px,4vw,30px);border-radius:30px;
+  font-size:clamp(.88rem,1.2vw,1rem);font-family:inherit;cursor:pointer;
+  box-shadow:0 4px 14px rgba(17,123,155,.4);transition:transform .15s,box-shadow .15s;
+  min-height:44px;
+}
+.btn:hover,.btn:active{transform:scale(1.05);box-shadow:0 6px 18px rgba(17,123,155,.55)}
+.btn.sec{background:rgba(255,241,220,.14);color:#FFF1DC;box-shadow:none}
+.btn.sec:hover,.btn.sec:active{background:rgba(255,241,220,.24)}
 
-/* ── FACT CARD ── */
+/* ── FACT CARD — Component B split layout ── */
 #oFact{
-  background:linear-gradient(155deg,#091e30,#0e3f58);
-  flex-direction:column;padding:clamp(10px,2vh,20px);gap:clamp(8px,1.5vh,14px);
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:#117B9B;
+  padding:0;overflow:hidden;
+  align-items:stretch;
 }
 .fact-inner{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);
-  border-radius:20px;padding:clamp(12px,2vh,20px);width:100%;max-width:720px;
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vh,16px);align-items:start;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr auto auto;
+  width:100%;height:100%;gap:0;
 }
-.fact-left{text-align:center}
-.fish-big{font-size:clamp(2.8rem,7vw,5.5rem)}
-.fish-nm{color:#d8b050;font-size:clamp(.95rem,2.5vw,1.5rem);font-weight:900;margin-top:4px}
-.fish-sci{color:rgba(255,255,255,.45);font-size:.75rem;font-style:italic}
-.fact-right{display:flex;flex-direction:column;gap:clamp(6px,1.2vh,10px)}
+/* Left panel: teal with animated avatar */
+.fact-left{
+  grid-column:1;grid-row:1 / span 3;
+  background:linear-gradient(180deg,#1A90AE 0%,#117B9B 60%,#0D6585 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:clamp(12px,2.5vh,28px);gap:8px;
+}
+.fish-big{
+  font-size:clamp(4rem,11vw,7rem);
+  animation:fishBob 2s ease-in-out infinite;
+  display:block;text-align:center;
+}
+@keyframes fishBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.fish-nm{
+  color:#FFF1DC;font-size:clamp(1rem,2.8vw,1.8rem);
+  text-align:center;margin-top:4px;
+}
+.fish-sci{
+  color:rgba(255,241,220,.55);font-size:.75rem;font-style:italic;text-align:center;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+}
+/* Right panel: cream card */
+.fact-right{
+  grid-column:2;grid-row:1;
+  background:#FFF1DC;
+  display:flex;flex-direction:column;gap:clamp(6px,1.2vh,10px);
+  padding:clamp(12px,2vh,18px);justify-content:center;
+}
 .fact-btn{
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
-  border-radius:13px;padding:clamp(9px,1.5vh,11px) 12px;cursor:pointer;
+  background:#fff;
+  border:1.5px solid rgba(46,76,51,.12);
+  border-radius:14px;padding:clamp(7px,1.2vh,10px) 10px;cursor:pointer;
   display:flex;align-items:center;gap:10px;
-  color:#e8eef5;font-family:inherit;transition:background .2s,transform .15s;text-align:left;
-  min-height:44px; /* Apple HIG minimum touch target */
+  color:#2E4C33;font-family:inherit;transition:background .2s,transform .15s;text-align:left;
+  min-height:44px;box-shadow:0 2px 8px rgba(17,123,155,.08);
 }
-.fact-btn:hover,.fact-btn:active{background:rgba(255,255,255,.16);transform:scale(1.02)}
-.fact-btn .ic{font-size:1.5rem;flex-shrink:0}
-.fact-btn .lbl{font-size:.68rem;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.06em}
-.fact-btn .val{font-weight:700;font-size:.82rem;margin-top:2px}
+.fact-btn:hover,.fact-btn:active{background:#f0e8d0;transform:scale(1.02)}
+.fact-btn .ic{
+  font-size:clamp(1.2rem,2vw,1.5rem);flex-shrink:0;
+  width:clamp(38px,5vw,50px);height:clamp(38px,5vw,50px);
+  border-radius:50%;background:rgba(17,123,155,.12);
+  display:flex;align-items:center;justify-content:center;
+}
+.fact-btn .lbl{
+  font-size:.63rem;color:rgba(46,76,51,.5);text-transform:uppercase;letter-spacing:.06em;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+}
+.fact-btn .val{
+  font-weight:600;font-size:.8rem;margin-top:1px;color:#2E4C33;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;
+}
 .fact-popup{
-  background:rgba(248,248,244,.95);color:#102030;
-  border-radius:14px;padding:clamp(9px,1.5vh,13px) 14px;
-  font-size:clamp(.78rem,1vw,.88rem);line-height:1.5;
-  grid-column:1/-1;min-height:50px;transition:all .3s;
+  background:rgba(17,123,155,.08);color:#4A4A4A;
+  border:1px solid rgba(17,123,155,.15);
+  border-radius:12px;padding:clamp(8px,1.2vh,12px) 12px;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.75rem,1vw,.86rem);line-height:1.5;
+  grid-column:2;grid-row:2;
+  margin:0 clamp(12px,2vh,18px);
 }
-.fact-popup.empty{opacity:.42;font-style:italic;text-align:center}
-.fact-footer{grid-column:1/-1;display:flex;justify-content:center;gap:10px;margin-top:2px;flex-wrap:wrap}
+.fact-popup.empty{opacity:.4;font-style:italic;text-align:center}
+.fact-footer{
+  grid-column:2;grid-row:3;
+  background:#FFF1DC;
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+  padding:clamp(8px,1.2vh,12px) clamp(12px,2vh,18px);
+}
 
-/* Portrait or narrow viewport → single column */
+/* Portrait / narrow: stack panels */
 @media(max-width:560px){
-  .fact-inner{grid-template-columns:1fr}
-  .fact-left{display:flex;align-items:center;gap:12px;text-align:left}
+  .fact-inner{grid-template-columns:1fr;grid-template-rows:auto auto auto auto}
+  .fact-left{grid-column:1;grid-row:1;padding:16px}
+  .fish-big{font-size:3rem}
+  .fact-right{grid-column:1;grid-row:2}
+  .fact-popup{grid-column:1;grid-row:3;margin:0 12px}
+  .fact-footer{grid-column:1;grid-row:4}
 }
 
 /* ── INTRO HTML SPEECH BUBBLE ── */
 #introBubble{
-  position:absolute;
-  left:17%;top:27%;width:40%;
+  position:absolute;left:17%;top:27%;width:40%;
   display:none;flex-direction:column;align-items:flex-start;
-  z-index:12;pointer-events:none; /* taps pass through to canvas */
+  z-index:12;pointer-events:none;
 }
 #introBubble.show{display:flex}
 .ib-box{
-  background:rgba(248,248,244,.97);
+  background:#FFF1DC;
   border-radius:clamp(8px,1.5%,16px);
   padding:clamp(7px,1.8%,13px) clamp(10px,2.5%,18px);
-  color:#102030;
-  box-shadow:0 4px 18px rgba(0,0,0,.32);
+  box-shadow:0 4px 18px rgba(10,60,80,.3);
+  border:1.5px solid rgba(46,76,51,.1);
   width:100%;
 }
 .ib-title{
-  font-weight:900;
   font-size:clamp(.68rem,1.9vw,.98rem);
-  margin-bottom:4px;color:#0a2d48;
+  margin-bottom:4px;color:#2E4C33;
 }
 .ib-text{
-  font-size:clamp(.6rem,1.55vw,.84rem);
-  line-height:1.55;color:#162e3e;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.6rem,1.55vw,.84rem);line-height:1.55;color:#4A4A4A;
 }
-/* Tail pointing down-left toward Tino */
 .ib-tail{
   width:0;height:0;
   border-left:10px solid transparent;
   border-right:10px solid transparent;
-  border-top:15px solid rgba(248,248,244,.97);
+  border-top:15px solid #FFF1DC;
   margin-left:20px;
 }
 
-/* ── TAP HINT above clownfish ── */
+/* ── TAP HINT ── */
 #tapHint{
-  position:absolute;
-  left:54.5%;top:31%;
+  position:absolute;left:54.5%;top:31%;
   transform:translateX(-50%);
-  color:#fff;font-weight:900;
+  color:#FFF1DC;
   font-size:clamp(.62rem,1.85vw,1.05rem);
-  text-shadow:0 2px 8px rgba(0,0,0,.55),0 0 18px rgba(220,155,40,.8);
-  display:none;z-index:12;
-  white-space:nowrap;pointer-events:none;
+  text-shadow:0 2px 8px rgba(10,60,80,.6),0 0 18px rgba(92,225,230,.7);
+  display:none;z-index:12;white-space:nowrap;pointer-events:none;
   animation:tapPulse 1.3s ease-in-out infinite;
 }
 #tapHint.show{display:block}
@@ -225,15 +280,13 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   0%,100%{opacity:1;transform:translateX(-50%) translateY(0)}
   50%{opacity:.35;transform:translateX(-50%) translateY(-4px)}
 }
-/* Very short landscape phone (e.g. iPhone SE landscape) */
+
 @media(max-height:380px){
-  .fact-inner{gap:6px;padding:10px}
-  .fact-right{gap:5px}
-  .fact-btn{padding:6px 10px;min-height:38px}
-  .fish-big{font-size:2rem}
-  .fact-popup{min-height:34px;padding:7px 11px}
-  #oFact{padding:8px;gap:6px}
-  #oStamp{gap:8px;padding:12px}
+  .fact-btn{padding:5px 8px;min-height:36px}
+  .fact-btn .ic{width:32px;height:32px;font-size:1rem}
+  .fish-big{font-size:2.2rem}
+  .fact-popup{padding:6px 10px}
+  #oStamp{gap:6px;padding:10px}
   #stampEmoji{font-size:2.5rem}
   .stamp-p{font-size:.78rem}
 }
@@ -262,7 +315,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   </div>
   <div id="shellBtn" title="Help">🐚</div>
 
-  <!-- INTRO: HTML speech bubble (replaces canvas text for responsive scaling) -->
+  <!-- INTRO BUBBLE -->
   <div id="introBubble">
     <div class="ib-box">
       <div class="ib-title">Hi! I'm Tino the Turtle! 🐢</div>
@@ -270,7 +323,6 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
     </div>
     <div class="ib-tail"></div>
   </div>
-  <!-- INTRO: Tap hint above clownfish -->
   <div id="tapHint">👆 Tap me!</div>
 
   <!-- TINO SPEECH BUBBLE -->
@@ -327,92 +379,49 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   </div>
 </div>
 
-
 <script>
-// ══════════════════════════════════════════════
-//  MOBILE: viewport height fix (iOS Safari 100vh bug)
-// ══════════════════════════════════════════════
 function fixVH(){
-  // Sets --appH so the @supports fallback rule works in older browsers
   document.documentElement.style.setProperty('--appH', window.innerHeight + 'px');
 }
 fixVH();
 window.addEventListener('resize', fixVH);
 window.addEventListener('orientationchange', () => setTimeout(fixVH, 250));
 
-// ══════════════════════════════════════════════
-//  CANVAS SETUP
-// ══════════════════════════════════════════════
 const canvas = document.getElementById('c');
 const ctx    = canvas.getContext('2d');
 const W = 900, H = 560;
 canvas.width  = W;
 canvas.height = H;
 
-// ══════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════
-// states: 'passport' | 'intro' | 'game' | 'stamp' | 'fact'
 let state = 'passport';
 let frame = 0;
 
-// ── Player (clownfish)
-const P = {
-  x:230, y:310,   // current position
-  tx:230, ty:310, // target position
-  dir:1,          // 1=right, -1=left
-  hiding:false,
-  dead:false,     // mid-respawn bubble
-  respawnT:0,
-};
+const P = {x:230,y:310,tx:230,ty:310,dir:1,hiding:false,dead:false,respawnT:0};
 
-// ── Zooplankton
 const PL = [
-  {x:510, y:175, eaten:false, phase:0},
-  {x:700, y:300, eaten:false, phase:2.09},
-  {x:435, y:385, eaten:false, phase:4.19},
+  {x:510,y:175,eaten:false,phase:0},
+  {x:700,y:300,eaten:false,phase:2.09},
+  {x:435,y:385,eaten:false,phase:4.19},
 ];
 let eaten = 0;
 
-// ── Anemone
-const AN = {x:175, y:478};
-
-// ── Grouper
-const GR = {x:-180, y:250, active:false, dir:1, speed:1.4, nextIn:480};
-
-// ── Danger pulse (0..1)
+const AN = {x:175,y:478};
+const GR = {x:-180,y:250,active:false,dir:1,speed:1.4,nextIn:480};
 let danger = 0;
 
-// ── Ambient bubbles
-const BUBS = Array.from({length:28}, ()=>mkBub({}));
+const BUBS = Array.from({length:28},()=>mkBub({}));
 function mkBub(b){
-  b.x    = Math.random()*W;
-  b.y    = H+10+Math.random()*80;
-  b.r    = 2+Math.random()*5;
-  b.spd  = .28+Math.random()*.55;
-  b.drft = (Math.random()-.5)*.38;
-  b.ph   = Math.random()*Math.PI*2;
+  b.x=Math.random()*W; b.y=H+10+Math.random()*80;
+  b.r=2+Math.random()*5; b.spd=.28+Math.random()*.55;
+  b.drft=(Math.random()-.5)*.38; b.ph=Math.random()*Math.PI*2;
   return b;
 }
 
-// ── Bubble-transition wipe (respawn)
-let wipe = 0; // 0=off; >0 fills screen then restores
+let wipe=0, iFrame=0, iStep=0, tinoTimer=0, idleT=0;
+const PARTICLES=[];
 
-// ── Intro
-let iFrame=0, iStep=0;
-
-// ── Tino system
-let tinoTimer = 0;
-let idleT     = 0;
-
-// ── Passive coin particles (eating celebration)
-const PARTICLES = [];
-
-// ══════════════════════════════════════════════
-//  DOM HELPERS
-// ══════════════════════════════════════════════
-const $ = id => document.getElementById(id);
-const SLOTS = [$('s0'),$('s1'),$('s2')];
+const $=id=>document.getElementById(id);
+const SLOTS=[$('s0'),$('s1'),$('s2')];
 
 function hideIntroBubble(){
   $('introBubble').classList.remove('show');
@@ -420,335 +429,216 @@ function hideIntroBubble(){
 }
 
 function showOverlay(name){
-  ['oPassport','oStamp','oFact'].forEach(id => $( id).classList.remove('show'));
+  ['oPassport','oStamp','oFact'].forEach(id=>$(id).classList.remove('show'));
   $('hud').classList.remove('show');
   $('shellBtn').classList.remove('show');
-  hideTino();
-  hideIntroBubble();
-  if(name==='passport') { $('oPassport').classList.add('show'); state='passport'; }
-  else if(name==='stamp') { $('oStamp').classList.add('show'); state='stamp'; }
-  else if(name==='fact')  { $('oFact').classList.add('show');  state='fact';  }
-  else {
-    // intro or game — canvas is in front
-    $('hud').classList.add('show');
-    $('shellBtn').classList.add('show');
-    state = name;
-  }
+  hideTino(); hideIntroBubble();
+  if(name==='passport'){$('oPassport').classList.add('show');state='passport';}
+  else if(name==='stamp'){$('oStamp').classList.add('show');state='stamp';}
+  else if(name==='fact'){$('oFact').classList.add('show');state='fact';}
+  else{$('hud').classList.add('show');$('shellBtn').classList.add('show');state=name;}
 }
 
-function updateHUD(){
-  SLOTS.forEach((s,i) => s.classList.toggle('on', PL[i].eaten));
-}
+function updateHUD(){SLOTS.forEach((s,i)=>s.classList.toggle('on',PL[i].eaten));}
 
-function showTino(msg, dur=4200){
-  $('tinoTxt').textContent = msg;
+function showTino(msg,dur=4200){
+  $('tinoTxt').textContent=msg;
   $('tinoPanel').classList.add('show');
-  tinoTimer = dur;
+  tinoTimer=dur;
 }
-function hideTino(){
-  $('tinoPanel').classList.remove('show');
-  tinoTimer = 0;
-}
+function hideTino(){$('tinoPanel').classList.remove('show');tinoTimer=0;}
 
-// ══════════════════════════════════════════════
-//  INPUT
-// ══════════════════════════════════════════════
 function canvasXY(e){
-  const r  = canvas.getBoundingClientRect();
-  const sx = W/r.width, sy = H/r.height;
-  const src= e.touches ? e.touches[0] : e;
-  return {x:(src.clientX-r.left)*sx, y:(src.clientY-r.top)*sy};
+  const r=canvas.getBoundingClientRect();
+  const sx=W/r.width,sy=H/r.height;
+  const src=e.touches?e.touches[0]:e;
+  return{x:(src.clientX-r.left)*sx,y:(src.clientY-r.top)*sy};
 }
 
 function onInput(e){
   if(e.cancelable) e.preventDefault();
-  const p = canvasXY(e);
-
-  if(state==='passport'){ startIntro(); return; }
-
+  const p=canvasXY(e);
+  if(state==='passport'){startIntro();return;}
   if(state==='intro'){
-    if(iStep>=1){
-      // tap the clownfish on intro screen
-      const dx=p.x-490, dy=p.y-260;
-      if(dx*dx+dy*dy < 80*80) startGame();
-    }
+    if(iStep>=1){const dx=p.x-490,dy=p.y-260;if(dx*dx+dy*dy<80*80)startGame();}
     return;
   }
-
   if(state==='game'){
     if(P.dead||wipe>0) return;
-    // Check anemone tap when grouper active
-    if(GR.active && !P.hiding){
-      const ax=p.x-AN.x, ay=p.y-AN.y;
-      if(ax*ax+ay*ay < 95*95){ hideInAnemone(); return; }
-    }
-    // Normal movement
-    if(!P.hiding){
-      P.tx=p.x; P.ty=p.y;
-      idleT=0;
-    }
+    if(GR.active&&!P.hiding){const ax=p.x-AN.x,ay=p.y-AN.y;if(ax*ax+ay*ay<95*95){hideInAnemone();return;}}
+    if(!P.hiding){P.tx=p.x;P.ty=p.y;idleT=0;}
   }
 }
 
-canvas.addEventListener('click',   onInput);
-canvas.addEventListener('touchstart', onInput, {passive:false});
-$('oPassport').addEventListener('click', ()=>{ if(state==='passport') startIntro(); });
-$('shellBtn').addEventListener('click', ()=>{
-  showTino("You're doing great! Look for the glowing zooplankton and tap near them to eat! 🦐");
-});
-$('btnCard').addEventListener('click',()=>{ showOverlay('fact'); resetFactPopup(); });
-$('btnAgain').addEventListener('click',()=>{ resetAll(); showOverlay('intro'); startIntro(); });
-$('btnPassport').addEventListener('click',()=>{ showOverlay('passport'); });
+canvas.addEventListener('click',onInput);
+canvas.addEventListener('touchstart',onInput,{passive:false});
+$('oPassport').addEventListener('click',()=>{if(state==='passport')startIntro();});
+$('shellBtn').addEventListener('click',()=>{showTino("You're doing great! Look for the glowing zooplankton and tap near them to eat! 🦐");});
+$('btnCard').addEventListener('click',()=>{showOverlay('fact');resetFactPopup();});
+$('btnAgain').addEventListener('click',()=>{resetAll();showOverlay('intro');startIntro();});
+$('btnPassport').addEventListener('click',()=>{showOverlay('passport');});
 
-// ══════════════════════════════════════════════
-//  GAME FLOW
-// ══════════════════════════════════════════════
-function startIntro(){
-  iFrame=0; iStep=0;
-  hideIntroBubble(); // reset in case of replay
-  showOverlay('intro');
-}
-
-function startGame(){
-  hideTino();
-  showOverlay('game');
-  setTimeout(()=>showTino("Find the glowing zooplankton and tap near them to eat! 🦐",4500),600);
-}
+function startIntro(){iFrame=0;iStep=0;hideIntroBubble();showOverlay('intro');}
+function startGame(){hideTino();showOverlay('game');setTimeout(()=>showTino("Find the glowing zooplankton and tap near them to eat! 🦐",4500),600);}
 
 function resetAll(){
   P.x=230;P.y=310;P.tx=230;P.ty=310;P.dir=1;
   P.hiding=false;P.dead=false;P.respawnT=0;
   PL.forEach(p=>{p.eaten=false});
-  eaten=0; GR.active=false; GR.nextIn=480; GR.x=-180;
-  danger=0; wipe=0; idleT=0;
-  PARTICLES.length=0;
-  updateHUD();
+  eaten=0;GR.active=false;GR.nextIn=480;GR.x=-180;
+  danger=0;wipe=0;idleT=0;PARTICLES.length=0;updateHUD();
 }
 
-function hideInAnemone(){
-  P.hiding=true;
-  P.x=AN.x; P.y=AN.y-28;
-  P.tx=AN.x; P.ty=AN.y-28;
-}
+function hideInAnemone(){P.hiding=true;P.x=AN.x;P.y=AN.y-28;P.tx=AN.x;P.ty=AN.y-28;}
 
 function triggerRespawn(){
   if(P.dead||P.hiding) return;
-  P.dead=true; wipe=0.001;
+  P.dead=true;wipe=0.001;
   showTino("Whoops! That was close! Tap the glowing green anemone to hide when the big fish comes! 🌿",5000);
 }
 
 function triggerVictory(){
   setTimeout(()=>{
     showOverlay('stamp');
-    setTimeout(()=>{ $('stampEmoji').classList.add('drop'); },80);
+    setTimeout(()=>{$('stampEmoji').classList.add('drop');},80);
   },700);
 }
 
-// ══════════════════════════════════════════════
-//  FACT CARD DATA
-// ══════════════════════════════════════════════
-const FACTS = {
-  heart: "💚💚💚  Clownfish are listed as Least Concern — there are still plenty of us swimming in the ocean! But we need healthy coral reefs to survive. You can help by never dropping rubbish near the sea. Even tiny actions make a big difference! 🌊",
-  home:  "🪸  I live in warm, shallow coral reefs — just like the ones near Malaysia and Singapore! Coral reefs are like bustling underwater cities, full of colour and life. My favourite spot is right next to a cosy sea anemone. It's my bedroom AND my bodyguard! 🏡",
-  diet:  "🦐  Yum yum! I love munching on tiny zooplankton and the algae that grows on coral. By eating algae, I help keep the reef clean — like a tiny underwater vacuum cleaner! A healthy reef needs herbivores like me to stay beautiful. ✨",
-  story: "🐠  Hi, I'm a Clownfish! Here's my superpower: most sea creatures can't touch sea anemones — their tentacles sting! But I'm immune because of a special mucus coating on my scales. I live inside the anemone for safety, and I keep it clean and well-fed in return. Best friends forever! 💛",
+const FACTS={
+  heart:"💚💚💚  Clownfish are listed as Least Concern — there are still plenty of us swimming in the ocean! But we need healthy coral reefs to survive. You can help by never dropping rubbish near the sea. Even tiny actions make a big difference! 🌊",
+  home: "🪸  I live in warm, shallow coral reefs — just like the ones near Malaysia and Singapore! Coral reefs are like bustling underwater cities, full of colour and life. My favourite spot is right next to a cosy sea anemone. It's my bedroom AND my bodyguard! 🏡",
+  diet: "🦐  Yum yum! I love munching on tiny zooplankton and the algae that grows on coral. By eating algae, I help keep the reef clean — like a tiny underwater vacuum cleaner! A healthy reef needs herbivores like me to stay beautiful. ✨",
+  story:"🐠  Hi, I'm a Clownfish! Here's my superpower: most sea creatures can't touch sea anemones — their tentacles sting! But I'm immune because of a special mucus coating on my scales. I live inside the anemone for safety, and I keep it clean and well-fed in return. Best friends forever! 💛",
 };
-function showFact(k){
-  const p=$('factPopup');
-  p.classList.remove('empty');
-  p.textContent=FACTS[k];
-}
-function resetFactPopup(){
-  const p=$('factPopup');
-  p.classList.add('empty');
-  p.textContent='Tap a card above to learn about me! 🐠';
-}
+function showFact(k){const p=$('factPopup');p.classList.remove('empty');p.textContent=FACTS[k];}
+function resetFactPopup(){const p=$('factPopup');p.classList.add('empty');p.textContent='Tap a card above to learn about me! 🐠';}
 
 // ══════════════════════════════════════════════
 //  UPDATE
 // ══════════════════════════════════════════════
 function update(){
   frame++;
-
-  // Always move ambient bubbles
   BUBS.forEach(b=>{
-    b.y -= b.spd;
-    b.x += Math.sin(frame*.025+b.ph)*b.drft;
-    if(b.y < -20) mkBub(b);
+    b.y-=b.spd; b.x+=Math.sin(frame*.025+b.ph)*b.drft;
+    if(b.y<-20) mkBub(b);
   });
 
   if(state==='intro'){
     iFrame++;
-    if(iFrame===70 && iStep===0){
-      iStep=1;
-      // Show HTML overlays — these scale with CSS so they're crisp on all screens
-      $('introBubble').classList.add('show');
-      $('tapHint').classList.add('show');
-    }
+    if(iFrame===70&&iStep===0){iStep=1;$('introBubble').classList.add('show');$('tapHint').classList.add('show');}
     return;
   }
-
   if(state!=='game') return;
 
-  // Tino timer
-  if(tinoTimer>0){ tinoTimer-=16; if(tinoTimer<=0) hideTino(); }
+  if(tinoTimer>0){tinoTimer-=16;if(tinoTimer<=0)hideTino();}
 
-  // Wipe transition (respawn)
   if(wipe>0){
     wipe+=.04;
-    if(wipe>=1){
-      wipe=0;
-      P.dead=false;
-      P.x=AN.x; P.y=AN.y-30;
-      P.tx=AN.x; P.ty=AN.y-30;
-    }
+    if(wipe>=1){wipe=0;P.dead=false;P.x=AN.x;P.y=AN.y-30;P.tx=AN.x;P.ty=AN.y-30;}
     return;
   }
 
-  // Particles
   for(let i=PARTICLES.length-1;i>=0;i--){
     const pt=PARTICLES[i];
-    pt.x+=pt.vx; pt.y+=pt.vy; pt.vy+=.15; pt.life--;
-    if(pt.life<=0) PARTICLES.splice(i,1);
+    pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=.15;pt.life--;
+    if(pt.life<=0)PARTICLES.splice(i,1);
   }
-
   if(P.dead) return;
 
-  // Player movement (smooth lerp)
   if(!P.hiding){
-    const dx=P.tx-P.x, dy=P.ty-P.y;
-    P.x+=dx*.075;
-    P.y+=dy*.075;
-    if(Math.abs(dx)>2) P.dir = dx>0 ? 1 : -1;
+    const dx=P.tx-P.x,dy=P.ty-P.y;
+    P.x+=dx*.075;P.y+=dy*.075;
+    if(Math.abs(dx)>2)P.dir=dx>0?1:-1;
   }
 
-  // Idle hint
-  if(!GR.active){ idleT++; }
-  if(idleT===420){
-    if(eaten<3) showTino("Look over there! Can you swim near the glowing shrimp to eat it? 🦐",4000);
-    idleT=0;
-  }
+  if(!GR.active){idleT++;}
+  if(idleT===420){if(eaten<3)showTino("Look over there! Can you swim near the glowing shrimp to eat it? 🦐",4000);idleT=0;}
 
-  // ── Feeding check
   PL.forEach((pl,i)=>{
     if(pl.eaten) return;
-    const dx=P.x-pl.x, dy=P.y-pl.y;
-    if(dx*dx+dy*dy < 52*52){
-      pl.eaten=true; eaten++;
-      updateHUD();
-      // celebration particles
+    const dx=P.x-pl.x,dy=P.y-pl.y;
+    if(dx*dx+dy*dy<52*52){
+      pl.eaten=true;eaten++;updateHUD();
       for(let k=0;k<12;k++){
-        const a=Math.random()*Math.PI*2;
-        const sp=1.5+Math.random()*2.5;
-        PARTICLES.push({x:pl.x,y:pl.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.5,life:40+Math.random()*20,r:3+Math.random()*5,c:['#f0b8d8','#f8f5f0','#ecc8de'][Math.floor(Math.random()*3)]});
+        const a=Math.random()*Math.PI*2,sp=1.5+Math.random()*2.5;
+        PARTICLES.push({x:pl.x,y:pl.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.5,life:40+Math.random()*20,r:3+Math.random()*5,c:['#5CE1E6','#FFF1DC','#a8f0f4'][Math.floor(Math.random()*3)]});
       }
-      if(eaten===1 && !GR.active){ GR.nextIn=90; showTino("Watch out! A big fish is coming! Tap the glowing green anemone to hide safely! 🌿",5000); }
-      if(eaten===3){ triggerVictory(); }
+      if(eaten===1&&!GR.active){GR.nextIn=90;showTino("Watch out! A big fish is coming! Tap the glowing green anemone to hide safely! 🌿",5000);}
+      if(eaten===3)triggerVictory();
     }
   });
 
-  // ── Grouper management
   GR.nextIn--;
-  if(GR.nextIn<=0 && !GR.active){
-    GR.active=true;
-    GR.dir = Math.random()>.5 ? 1 : -1;
-    GR.x   = GR.dir>0 ? -180 : W+180;
-    GR.y   = 170+Math.random()*200;
-    GR.speed=1.3+Math.random()*.5;
-    GR.nextIn=650+Math.floor(Math.random()*300);
+  if(GR.nextIn<=0&&!GR.active){
+    GR.active=true;GR.dir=Math.random()>.5?1:-1;
+    GR.x=GR.dir>0?-180:W+180;GR.y=170+Math.random()*200;
+    GR.speed=1.3+Math.random()*.5;GR.nextIn=650+Math.floor(Math.random()*300);
   }
-
   if(GR.active){
-    GR.x += GR.dir*GR.speed;
-    danger = Math.min(1, danger+.035);
-
-    // Exit check
-    if((GR.dir>0 && GR.x>W+220)||(GR.dir<0 && GR.x<-220)){
-      GR.active=false; danger=0;
-      if(P.hiding){ P.hiding=false; }
-    } else {
-      // Collision (only outside anemone)
-      if(!P.hiding){
-        const dx=P.x-GR.x, dy=P.y-GR.y;
-        if(dx*dx+dy*dy < 75*75) triggerRespawn();
-      }
+    GR.x+=GR.dir*GR.speed;danger=Math.min(1,danger+.035);
+    if((GR.dir>0&&GR.x>W+220)||(GR.dir<0&&GR.x<-220)){
+      GR.active=false;danger=0;if(P.hiding)P.hiding=false;
+    } else if(!P.hiding){
+      const dx=P.x-GR.x,dy=P.y-GR.y;
+      if(dx*dx+dy*dy<75*75)triggerRespawn();
     }
-  } else {
-    danger=Math.max(0,danger-.03);
-  }
-
-  // Release from hiding when safe
-  if(P.hiding && !GR.active){ P.hiding=false; }
+  } else {danger=Math.max(0,danger-.03);}
+  if(P.hiding&&!GR.active)P.hiding=false;
 }
 
 // ══════════════════════════════════════════════
-//  DRAW HELPERS
+//  DRAW — sunlit Indo-Pacific reef
 // ══════════════════════════════════════════════
-function rrect(x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y);
-  ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r);
-  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h);
-  ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r);
-  ctx.arcTo(x,y,x+r,y,r);
-  ctx.closePath();
-}
-
-// ── Ocean background
 function drawBG(){
+  // Crystal-clear sunlit shallow water
   const g=ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0,'#0e4d6a');
-  g.addColorStop(.3,'#1a6e82');
-  g.addColorStop(.7,'#0a3f50');
-  g.addColorStop(1,'#061520');
+  g.addColorStop(0,'#56C8DE');
+  g.addColorStop(.22,'#2AAAC2');
+  g.addColorStop(.52,'#117B9B');
+  g.addColorStop(.78,'#0D6585');
+  g.addColorStop(1,'#0A4E68');
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-  // Light rays
+  // God rays — warm cream light from surface
   ctx.save();
   for(let i=0;i<9;i++){
-    const rx=50+i*108+24*Math.sin(frame*.007+i*.8);
-    ctx.globalAlpha=.038+.015*Math.sin(frame*.015+i);
-    ctx.fillStyle='#a8d8cc';
+    const rx=50+i*108+28*Math.sin(frame*.007+i*.8);
+    ctx.globalAlpha=.065+.028*Math.sin(frame*.015+i);
+    ctx.fillStyle='#FFF1DC';
     ctx.beginPath();
-    ctx.moveTo(rx-28,0); ctx.lineTo(rx+28,0);
-    ctx.lineTo(rx+110+i*8,H); ctx.lineTo(rx-110-i*8,H);
-    ctx.closePath(); ctx.fill();
+    ctx.moveTo(rx-28,0);ctx.lineTo(rx+28,0);
+    ctx.lineTo(rx+120+i*8,H);ctx.lineTo(rx-120-i*8,H);
+    ctx.closePath();ctx.fill();
   }
   ctx.restore();
 
-  // Sandy bottom
+  // Sandy bottom — warm cream sand
   const sg=ctx.createLinearGradient(0,H-65,0,H);
-  sg.addColorStop(0,'#c8b078'); sg.addColorStop(1,'#a88850');
+  sg.addColorStop(0,'#EAD8A8');sg.addColorStop(1,'#C8A870');
   ctx.fillStyle=sg;
-  ctx.beginPath(); ctx.moveTo(0,H);
+  ctx.beginPath();ctx.moveTo(0,H);
   for(let x=0;x<=W;x+=28) ctx.lineTo(x,H-55+9*Math.sin(x*.045));
-  ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+  ctx.lineTo(W,H);ctx.closePath();ctx.fill();
 }
 
-// ── Coral branch
 function coralBranch(x,y,col,brs,h){
-  ctx.strokeStyle=col; ctx.lineCap='round';
-  ctx.lineWidth=7; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-h); ctx.stroke();
+  ctx.strokeStyle=col;ctx.lineCap='round';
+  ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y-h);ctx.stroke();
   ctx.lineWidth=4;
   for(let i=0;i<brs;i++){
     const by2=y-h*(.38+i*.22);
     const bx2=x+(i%2===0?-1:1)*(14+i*6);
-    ctx.beginPath(); ctx.moveTo(x,by2); ctx.lineTo(bx2,by2-18); ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x,by2);ctx.lineTo(bx2,by2-18);ctx.stroke();
     ctx.fillStyle=col;
-    ctx.beginPath(); ctx.arc(bx2,by2-20,5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath();ctx.arc(bx2,by2-20,6,0,Math.PI*2);ctx.fill();
   }
   ctx.fillStyle=col;
-  ctx.beginPath(); ctx.arc(x,y-h-2,6.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath();ctx.arc(x,y-h-2,7.5,0,Math.PI*2);ctx.fill();
 }
 
-// ── Seaweed
 function seaweed(x,y,col,h,seed){
-  ctx.strokeStyle=col; ctx.lineWidth=4; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(x,y);
+  ctx.strokeStyle=col;ctx.lineWidth=4;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(x,y);
   for(let i=1;i<=7;i++){
     const cy=y-i*(h/7);
     const cx=x+13*Math.sin(frame*.022+i*.9+seed);
@@ -757,398 +647,308 @@ function seaweed(x,y,col,h,seed){
   ctx.stroke();
 }
 
-// ── Coral scene
 function drawCoral(){
-  // Left cluster — warm muted coral
-  coralBranch(75,H-52,'#c86848',3,65);
-  coralBranch(115,H-58,'#d47848',3,55);
-  // Right cluster — soft rose
-  coralBranch(710,H-52,'#b85870',4,68);
-  coralBranch(755,H-52,'#9a4862',3,58);
-  coralBranch(800,H-48,'#b06070',3,50);
-  // Middle — muted teal & lavender
-  coralBranch(380,H-50,'#3aa8b8',2,42);
-  coralBranch(565,H-52,'#6048a8',3,58);
-  // Rocks
-  ctx.fillStyle='#3a4c58';
-  ctx.beginPath(); ctx.ellipse(320,H-28,55,18,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#2a3c48';
-  ctx.beginPath(); ctx.ellipse(640,H-24,48,14,0,0,Math.PI*2); ctx.fill();
+  // Left — warm staghorn coral
+  coralBranch(75,H-52,'#D97050',3,65);
+  coralBranch(115,H-58,'#E08050',3,55);
+  // Right — soft rose branching coral
+  coralBranch(710,H-52,'#C06878',4,68);
+  coralBranch(755,H-52,'#A85868',3,58);
+  coralBranch(800,H-48,'#B86878',3,50);
+  // Middle — teal fan + soft lavender
+  coralBranch(380,H-50,'#2A9898',2,42);
+  coralBranch(565,H-52,'#7860B0',3,58);
+  // Rocks — warm-toned
+  ctx.fillStyle='#4A5860';
+  ctx.beginPath();ctx.ellipse(320,H-28,55,18,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#384858';
+  ctx.beginPath();ctx.ellipse(640,H-24,48,14,0,0,Math.PI*2);ctx.fill();
   // Seaweed
-  seaweed(258,H-52,'#2a7840',52,0);
-  seaweed(288,H-52,'#349050',62,1);
-  seaweed(500,H-52,'#267038',46,2);
+  seaweed(258,H-52,'#2E7840',52,0);
+  seaweed(288,H-52,'#3A9050',62,1);
+  seaweed(500,H-52,'#287038',46,2);
 }
 
-// ── Ambient bubbles
 function drawBubbles(){
   ctx.save();
   BUBS.forEach(b=>{
     const bx=b.x+Math.sin(frame*.02+b.ph)*4;
-    ctx.globalAlpha=.25;
-    ctx.strokeStyle='rgba(140,200,220,.75)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.arc(bx,b.y,b.r,0,Math.PI*2); ctx.stroke();
-    ctx.globalAlpha=.07; ctx.fillStyle='#90c8d8';
+    ctx.globalAlpha=.28;
+    ctx.strokeStyle='rgba(255,241,220,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(bx,b.y,b.r,0,Math.PI*2);ctx.stroke();
+    ctx.globalAlpha=.06;ctx.fillStyle='#FFF1DC';
     ctx.fill();
   });
   ctx.restore();
 }
 
-// ── Anemone
 function drawAnemone(glowing){
-  const x=AN.x,y=AN.y;
-  const t=frame*.042;
-
+  const x=AN.x,y=AN.y,t=frame*.042;
   if(glowing){
     ctx.save();
-    ctx.shadowColor='#50c888'; ctx.shadowBlur=28+10*Math.sin(t*3);
-    ctx.globalAlpha=.45+.1*Math.sin(t*3);
-    ctx.fillStyle='#50c888';
-    ctx.beginPath(); ctx.ellipse(x,y+6,58,20,0,0,Math.PI*2); ctx.fill();
+    // #4EFA96 — the spec's "Safety Zone" glowing anemone green
+    ctx.shadowColor='#4EFA96';ctx.shadowBlur=32+12*Math.sin(t*3);
+    ctx.globalAlpha=.5+.12*Math.sin(t*3);
+    ctx.fillStyle='#4EFA96';
+    ctx.beginPath();ctx.ellipse(x,y+6,62,22,0,0,Math.PI*2);ctx.fill();
     ctx.restore();
   }
-
-  // Base disk
-  ctx.fillStyle='#2e1858';
-  ctx.beginPath(); ctx.ellipse(x,y+8,48,14,0,0,Math.PI*2); ctx.fill();
-
-  // Tentacles — muted mauve / dusky orchid
-  const cols=['#a848a0','#903890','#b868b0','#9050a0','#a860a8'];
+  ctx.fillStyle='#2E4C33';
+  ctx.beginPath();ctx.ellipse(x,y+8,48,14,0,0,Math.PI*2);ctx.fill();
+  // Tentacles — warm tropical mauve
+  const cols=['#A848A0','#904890','#C068B8','#9858A8','#B060A8'];
   for(let i=0;i<10;i++){
     const a=(i/10)*Math.PI*2;
     const sway=.32*Math.sin(t+i*.72);
     const ex=x+Math.cos(a+sway)*32;
     const ey=y-32-9*Math.abs(Math.sin(a+t*.45));
-
-    ctx.strokeStyle=cols[i%5]; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.strokeStyle=cols[i%5];ctx.lineWidth=6;ctx.lineCap='round';
     ctx.beginPath();
     ctx.moveTo(x+Math.cos(a)*22,y+4);
     ctx.quadraticCurveTo(x+Math.cos(a+sway)*36,y-14,ex,ey);
     ctx.stroke();
     ctx.fillStyle=cols[(i+2)%5];
-    ctx.beginPath(); ctx.arc(ex,ey,5.5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath();ctx.arc(ex,ey,5.5,0,Math.PI*2);ctx.fill();
   }
 }
 
-// ── Zooplankton
 function drawPlankton(x,y,phase){
   const t=frame*.05+phase;
   const gv=.5+.5*Math.sin(t*1.8);
-
   ctx.save();
-  // outer glow rings — soft bioluminescent pink
-  ctx.globalAlpha=.18+.10*gv; ctx.fillStyle='#e8a8d8';
-  ctx.beginPath(); ctx.arc(x,y,30,0,Math.PI*2); ctx.fill();
-  ctx.globalAlpha=.30+.15*gv; ctx.fillStyle='#d898c8';
-  ctx.beginPath(); ctx.arc(x,y,20,0,Math.PI*2); ctx.fill();
+  // #5CE1E6 — spec's "Feeding Glow" bioluminescent cyan
+  ctx.globalAlpha=.2+.12*gv;ctx.fillStyle='#5CE1E6';
+  ctx.beginPath();ctx.arc(x,y,30,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=.38+.18*gv;ctx.fillStyle='#7AE8ED';
+  ctx.beginPath();ctx.arc(x,y,20,0,Math.PI*2);ctx.fill();
   ctx.restore();
 
-  // body
-  ctx.fillStyle='#eec8de';
-  ctx.beginPath(); ctx.ellipse(x,y,12,7,t*.28,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#c07898'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#BAFBFF';
+  ctx.beginPath();ctx.ellipse(x,y,12,7,t*.28,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#5CE1E6';ctx.lineWidth=1.5;ctx.stroke();
 
-  // antennae
-  ctx.strokeStyle='#c07898'; ctx.lineWidth=1.2;
-  ctx.beginPath(); ctx.moveTo(x-5,y-5); ctx.lineTo(x-13,y-13+Math.sin(t*2)*3); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x+5,y-5); ctx.lineTo(x+13,y-13+Math.sin(t*2+1)*3); ctx.stroke();
+  ctx.strokeStyle='#5CE1E6';ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.moveTo(x-5,y-5);ctx.lineTo(x-13,y-13+Math.sin(t*2)*3);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+5,y-5);ctx.lineTo(x+13,y-13+Math.sin(t*2+1)*3);ctx.stroke();
 
-  // orbit particles
-  ctx.save();
-  ctx.globalAlpha=.35+.25*gv;
+  ctx.save();ctx.globalAlpha=.4+.28*gv;
   for(let i=0;i<4;i++){
     const ba=(i/4)*Math.PI*2+t;
     const br=19+5*Math.sin(t+i);
-    const bx=x+Math.cos(ba)*br, by=y+Math.sin(ba)*br*.65;
-    ctx.fillStyle='#f8f4f8';
-    ctx.beginPath(); ctx.arc(bx,by,2+Math.sin(t*2+i)*.8,0,Math.PI*2); ctx.fill();
+    const bx=x+Math.cos(ba)*br,by=y+Math.sin(ba)*br*.65;
+    ctx.fillStyle='#FFF1DC';
+    ctx.beginPath();ctx.arc(bx,by,2+Math.sin(t*2+i)*.8,0,Math.PI*2);ctx.fill();
   }
   ctx.restore();
 }
 
-// ── Clownfish
 function drawClown(x,y,dir,hiding){
   ctx.save();
-  ctx.translate(x,y); ctx.scale(dir,1);
+  ctx.translate(x,y);ctx.scale(dir,1);
   const bob=Math.sin(frame*.052)*2.2;
   ctx.translate(0,bob);
-  if(hiding){ ctx.scale(.72,.72); ctx.globalAlpha=.85; }
+  if(hiding){ctx.scale(.72,.72);ctx.globalAlpha=.85;}
 
-  // tail
-  ctx.fillStyle='#b84010';
+  ctx.fillStyle='#B84010';
   ctx.beginPath();
   ctx.moveTo(-27,0);
   ctx.lineTo(-46,-16+Math.sin(frame*.16)*5.5);
   ctx.lineTo(-46, 16-Math.sin(frame*.16)*5.5);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();ctx.fill();
 
-  // body gradient — warm natural orange
   const bg=ctx.createRadialGradient(4,-2,4,0,0,28);
-  bg.addColorStop(0,'#e07828'); bg.addColorStop(1,'#b03800');
+  bg.addColorStop(0,'#E07828');bg.addColorStop(1,'#B03800');
   ctx.fillStyle=bg;
-  ctx.beginPath(); ctx.ellipse(0,0,28,15,0,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#180800'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.ellipse(0,0,28,15,0,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,0,28,15,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#200800';ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(0,0,28,15,0,0,Math.PI*2);ctx.stroke();
 
-  // white stripes
-  ctx.fillStyle='#f5f2ee'; ctx.strokeStyle='#180800'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.ellipse(9,0,3.5,15,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(-8,0,3.5,14,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#FFF1DC';ctx.strokeStyle='#200800';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.ellipse(9,0,3.5,15,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(-8,0,3.5,14,0,0,Math.PI*2);ctx.fill();ctx.stroke();
 
-  // dorsal fin
-  ctx.fillStyle='#c84808';
+  ctx.fillStyle='#C84808';
   ctx.beginPath();
-  ctx.moveTo(-10,-15); ctx.lineTo(12,-15);
+  ctx.moveTo(-10,-15);ctx.lineTo(12,-15);
   ctx.lineTo(16,-27+Math.sin(frame*.09)*2);
   ctx.lineTo(-5,-27+Math.sin(frame*.09)*2);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();ctx.fill();
 
-  // eye
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(16,-4,8,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#100400';
-  ctx.beginPath(); ctx.arc(18,-3,5,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(19.5,-4.5,2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(16,-4,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#180600';
+  ctx.beginPath();ctx.arc(18,-3,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(19.5,-4.5,2,0,Math.PI*2);ctx.fill();
 
-  // mouth
-  ctx.strokeStyle='#180800'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(24,2,4.5,.25,Math.PI-.25); ctx.stroke();
+  ctx.strokeStyle='#200800';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(24,2,4.5,.25,Math.PI-.25);ctx.stroke();
 
-  // pectoral fin
   ctx.fillStyle='rgba(160,55,0,.58)';
-  ctx.beginPath(); ctx.ellipse(0,12,10,5,-.35,0,Math.PI*2); ctx.fill();
-
+  ctx.beginPath();ctx.ellipse(0,12,10,5,-.35,0,Math.PI*2);ctx.fill();
   ctx.restore();
 }
 
-// ── Grouper (predator)
 function drawGrouper(x,y,dir){
   ctx.save();
-  ctx.translate(x,y); ctx.scale(dir,1);
+  ctx.translate(x,y);ctx.scale(dir,1);
   const bob=Math.sin(frame*.042)*3.2;
   ctx.translate(0,bob);
 
-  // tail
-  ctx.fillStyle='#6a2e18';
+  ctx.fillStyle='#6A2E18';
   ctx.beginPath();
   ctx.moveTo(-58,0);
   ctx.lineTo(-78,-24+Math.sin(frame*.11)*7);
   ctx.lineTo(-78, 24-Math.sin(frame*.11)*7);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();ctx.fill();
 
-  // body — warm muted brown
   const bg=ctx.createRadialGradient(8,0,10,0,0,56);
-  bg.addColorStop(0,'#9e5028'); bg.addColorStop(1,'#6a2e18');
+  bg.addColorStop(0,'#9E5028');bg.addColorStop(1,'#6A2E18');
   ctx.fillStyle=bg;
-  ctx.beginPath(); ctx.ellipse(0,0,56,31,0,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#300e08'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.ellipse(0,0,56,31,0,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,0,56,31,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#300E08';ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(0,0,56,31,0,0,Math.PI*2);ctx.stroke();
 
-  // spots
-  ctx.fillStyle='rgba(0,0,0,.15)';
-  for(let i=0;i<6;i++){
-    ctx.beginPath();
-    ctx.ellipse(-20+i*10,-9+(i%2)*18,9,6,0,0,Math.PI*2); ctx.fill();
-  }
+  ctx.fillStyle='rgba(0,0,0,.14)';
+  for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(-20+i*10,-9+(i%2)*18,9,6,0,0,Math.PI*2);ctx.fill();}
 
-  // dorsal fin
-  ctx.fillStyle='#6a2e18';
-  ctx.beginPath();
-  ctx.moveTo(-30,-30); ctx.lineTo(18,-30);
-  ctx.lineTo(22,-46); ctx.lineTo(-12,-46);
-  ctx.closePath(); ctx.fill();
-  // fin spines
-  ctx.strokeStyle='#300e08'; ctx.lineWidth=1.5;
-  for(let i=0;i<4;i++){
-    ctx.beginPath();
-    ctx.moveTo(-20+i*12,-30); ctx.lineTo(-18+i*11,-44); ctx.stroke();
-  }
+  ctx.fillStyle='#6A2E18';
+  ctx.beginPath();ctx.moveTo(-30,-30);ctx.lineTo(18,-30);ctx.lineTo(22,-46);ctx.lineTo(-12,-46);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#300E08';ctx.lineWidth=1.5;
+  for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(-20+i*12,-30);ctx.lineTo(-18+i*11,-44);ctx.stroke();}
 
-  // eye
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(36,-9,10,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#100400';
-  ctx.beginPath(); ctx.arc(38,-8,6.5,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(39.5,-9,2,0,Math.PI*2); ctx.fill();
-  // brow (menacing)
-  ctx.strokeStyle='#180800'; ctx.lineWidth=2.5;
-  ctx.beginPath(); ctx.moveTo(27,-18); ctx.lineTo(46,-15); ctx.stroke();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(36,-9,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#180600';
+  ctx.beginPath();ctx.arc(38,-8,6.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(39.5,-9,2,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#200800';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(27,-18);ctx.lineTo(46,-15);ctx.stroke();
 
-  // mouth
   ctx.fillStyle='#200808';
-  ctx.beginPath(); ctx.arc(50,6,9,0,Math.PI); ctx.fill();
-  ctx.strokeStyle='#180808'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.arc(50,6,9,0,Math.PI); ctx.stroke();
-
+  ctx.beginPath();ctx.arc(50,6,9,0,Math.PI);ctx.fill();
+  ctx.strokeStyle='#180808';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(50,6,9,0,Math.PI);ctx.stroke();
   ctx.restore();
 }
 
-// ── Tino (guide turtle)
 function drawTino(x,y){
   ctx.save();
   ctx.translate(x,y);
   const bob=Math.sin(frame*.042)*4;
   ctx.translate(0,bob);
 
-  // shell — natural olive green
+  // Shell — #2E4C33 is spec's "Tino's Deep Shell" colour
   const sg=ctx.createRadialGradient(0,-4,8,0,0,40);
-  sg.addColorStop(0,'#4e7a28'); sg.addColorStop(1,'#224415');
-  ctx.fillStyle=sg; ctx.strokeStyle='#182a10'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.ellipse(0,-4,40,29,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
-  // shell pattern
-  ctx.fillStyle='rgba(245,240,200,.16)';
-  ctx.beginPath(); ctx.ellipse(0,-4,22,15,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(-14,-12,9,6,-.5,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(14,-12,9,6, .5,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(-12,8,7,5,-.3,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(12,8,7,5, .3,0,Math.PI*2); ctx.fill();
+  sg.addColorStop(0,'#4A7830');sg.addColorStop(1,'#2E4C33');
+  ctx.fillStyle=sg;ctx.strokeStyle='#1C3020';ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(0,-4,40,29,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(255,241,220,.15)';
+  ctx.beginPath();ctx.ellipse(0,-4,22,15,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(-14,-12,9,6,-.5,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(14,-12,9,6, .5,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(-12,8,7,5,-.3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(12,8,7,5, .3,0,Math.PI*2);ctx.fill();
 
-  // head
-  ctx.fillStyle='#58a030'; ctx.strokeStyle='#224415'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(34,-8,18,0,Math.PI*2); ctx.fill(); ctx.stroke();
-  // eye
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(40,-13,7,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#182a10';
-  ctx.beginPath(); ctx.arc(42,-12,4.5,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#f5f2ee';
-  ctx.beginPath(); ctx.arc(43,-13,1.8,0,Math.PI*2); ctx.fill();
-  // smile
-  ctx.strokeStyle='#182a10'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.arc(42,-3,6,.2,Math.PI-.2); ctx.stroke();
+  ctx.fillStyle='#58A030';ctx.strokeStyle='#2E4C33';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(34,-8,18,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(40,-13,7,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1C3020';
+  ctx.beginPath();ctx.arc(42,-12,4.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#FFF1DC';
+  ctx.beginPath();ctx.arc(43,-13,1.8,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#1C3020';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(42,-3,6,.2,Math.PI-.2);ctx.stroke();
 
-  // front flipper (waving)
-  ctx.fillStyle='#4a9428'; ctx.strokeStyle='#224415'; ctx.lineWidth=1.5;
-  ctx.beginPath();
-  ctx.ellipse(18,18+Math.sin(frame*.055)*6,19,8,.55,0,Math.PI*2);
-  ctx.fill(); ctx.stroke();
-  // back flipper
-  ctx.beginPath();
-  ctx.ellipse(-22,20,15,7,.3,0,Math.PI*2); ctx.fill(); ctx.stroke();
-
+  ctx.fillStyle='#4A9028';ctx.strokeStyle='#2E4C33';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.ellipse(18,18+Math.sin(frame*.055)*6,19,8,.55,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(-22,20,15,7,.3,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.restore();
 }
 
-// ── Amber danger vignette
 function drawDanger(){
   if(danger<=0) return;
+  // #E39B32 — spec's "Suspense Overlay" warm amber orange
   const a=danger*(.13+.07*Math.sin(frame*.22));
   const g=ctx.createRadialGradient(W/2,H/2,H*.28,W/2,H/2,W*.72);
-  g.addColorStop(0,'rgba(200,100,30,0)');
-  g.addColorStop(1,`rgba(190,90,20,${a})`);
-  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  g.addColorStop(0,'rgba(227,155,50,0)');
+  g.addColorStop(1,`rgba(227,155,50,${a})`);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
 }
 
-// ── Respawn wipe
 function drawWipe(){
   if(wipe<=0) return;
   ctx.save();
   ctx.globalAlpha=Math.min(1,wipe*1.4);
-  ctx.fillStyle='#050f1c'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#062030';ctx.fillRect(0,0,W,H);
   const cnt=Math.floor(wipe*35);
-  ctx.strokeStyle='rgba(60,160,200,.5)'; ctx.lineWidth=1.8;
+  ctx.strokeStyle='rgba(92,225,230,.5)';ctx.lineWidth=1.8;
   for(let i=0;i<cnt;i++){
     const a=(i/cnt)*Math.PI*2;
     const rr=30+i*9+wipe*45;
     const bx=W/2+Math.cos(a+frame*.09)*rr*1.6;
     const by=H/2+Math.sin(a+frame*.07)*rr;
     const br=15+Math.sin(i+frame*.2)*14;
-    ctx.beginPath(); ctx.arc(bx,by,Math.max(4,br),0,Math.PI*2); ctx.stroke();
+    ctx.beginPath();ctx.arc(bx,by,Math.max(4,br),0,Math.PI*2);ctx.stroke();
   }
   ctx.restore();
 }
 
-// ── Particles
 function drawParticles(){
   PARTICLES.forEach(pt=>{
     ctx.save();
     ctx.globalAlpha=pt.life/60;
     ctx.fillStyle=pt.c;
-    ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill();
+    ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);ctx.fill();
     ctx.restore();
   });
 }
 
-// ══════════════════════════════════════════════
-//  DRAW INTRO SCENE
-// ══════════════════════════════════════════════
 function drawIntro(){
-  drawBG(); drawCoral(); drawBubbles();
-
-  // Pulsing clownfish in center-right
+  drawBG();drawCoral();drawBubbles();
   const pulse=1+.055*Math.sin(frame*.09);
   ctx.save();
-  ctx.translate(490,260); ctx.scale(pulse,pulse); ctx.translate(-490,-260);
-  // glow halo — warm amber
+  ctx.translate(490,260);ctx.scale(pulse,pulse);ctx.translate(-490,-260);
   ctx.save();
-  ctx.shadowColor='#e89038'; ctx.shadowBlur=32;
-  ctx.globalAlpha=.24+.15*Math.sin(frame*.09);
-  ctx.fillStyle='#e8a040';
-  ctx.beginPath(); ctx.arc(490,260,52,0,Math.PI*2); ctx.fill();
+  ctx.shadowColor='#E39B32';ctx.shadowBlur=32;
+  ctx.globalAlpha=.22+.14*Math.sin(frame*.09);
+  ctx.fillStyle='#F0B040';
+  ctx.beginPath();ctx.arc(490,260,52,0,Math.PI*2);ctx.fill();
   ctx.restore();
   drawClown(490,260,1,false);
   ctx.restore();
-
-  // Tino entering from left
   const tx=Math.min(115,-90+iFrame*2.6);
   drawTino(tx,310);
-  // Speech bubble + tap hint are now HTML overlays (#introBubble, #tapHint)
-  // shown via JS when iStep >= 1 — so they scale correctly on all screen sizes
 }
 
-// ══════════════════════════════════════════════
-//  DRAW GAME SCENE
-// ══════════════════════════════════════════════
 function drawGame(){
-  drawBG(); drawCoral(); drawBubbles();
+  drawBG();drawCoral();drawBubbles();
   drawAnemone(GR.active);
-
-  // Zooplankton
-  PL.forEach(pl=>{ if(!pl.eaten) drawPlankton(pl.x,pl.y,pl.phase); });
-
-  // Grouper
-  if(GR.active) drawGrouper(GR.x,GR.y,GR.dir);
-
-  // Player
-  if(!P.dead || wipe<.25){
+  PL.forEach(pl=>{if(!pl.eaten)drawPlankton(pl.x,pl.y,pl.phase);});
+  if(GR.active)drawGrouper(GR.x,GR.y,GR.dir);
+  if(!P.dead||wipe<.25){
     if(P.hiding){
       ctx.save();
-      ctx.beginPath();
-      ctx.ellipse(AN.x,AN.y,38,22,0,0,Math.PI*2); ctx.clip();
+      ctx.beginPath();ctx.ellipse(AN.x,AN.y,38,22,0,0,Math.PI*2);ctx.clip();
       drawClown(AN.x,AN.y-14,P.dir,true);
       ctx.restore();
     } else {
       drawClown(P.x,P.y,P.dir,false);
     }
   }
-
-  drawParticles();
-  drawDanger();
-  drawWipe();
+  drawParticles();drawDanger();drawWipe();
 }
 
-// ══════════════════════════════════════════════
-//  MAIN LOOP
-// ══════════════════════════════════════════════
 function loop(){
   ctx.clearRect(0,0,W,H);
   update();
-
   if(state==='intro') drawIntro();
   else if(state==='game') drawGame();
-  else {
-    // background canvas for stamp/fact screens
-    drawBG(); drawCoral(); drawBubbles();
-  }
-
+  else{drawBG();drawCoral();drawBubbles();}
   requestAnimationFrame(loop);
 }
-
-// ══════════════════════════════════════════════
-//  BOOT
-// ══════════════════════════════════════════════
 loop();
 </script>
 </body>
