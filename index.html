@@ -30,11 +30,6 @@ body{
 }
 canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;touch-action:none}
 
-@media(orientation:portrait){
-  body{align-items:flex-start}
-  #wrapper{margin-top:max(env(safe-area-inset-top,0px),8px)}
-}
-
 /* ── OVERLAY BASE ── */
 .overlay{
   position:absolute;inset:0;
@@ -79,6 +74,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   overflow:hidden;
   position:relative;
   display:flex;align-items:center;
+  touch-action:none;
 }
 .pp-track{
   display:flex;gap:20px;
@@ -472,7 +468,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   50%{opacity:.35;transform:translateX(-50%) translateY(-4px)}
 }
 
-@media(max-height:380px){
+@media(max-height:380px) and (orientation:landscape){
   .fact-btn{padding:5px 8px;min-height:36px}
   .fact-btn .ic{width:32px;height:32px;font-size:1rem}
   .fish-big{font-size:2.2rem}
@@ -484,6 +480,57 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   .card-emoji{font-size:1.8rem;}
   .pp-bar{min-height:38px;padding:6px 10px;}
   .pp-footer{min-height:48px;padding:5px 10px;}
+}
+
+/* ── PORTRAIT: full-screen passport + larger cards ── */
+@media(orientation:portrait){
+  body{align-items:flex-start;overflow:hidden;}
+  html{overflow:hidden;height:100%;}
+  #wrapper{margin-top:max(env(safe-area-inset-top,0px),8px);}
+
+  /* Passport fills the entire screen — no aspect-ratio constraint */
+  #oPassport{
+    position:fixed!important;
+    inset:0;border-radius:0;z-index:50;
+    touch-action:none;
+  }
+  #ppGateModal{border-radius:0;}
+  #ppSettings{border-radius:0;}
+
+  .pp-bar{
+    min-height:64px;
+    padding:max(env(safe-area-inset-top,12px),12px) 18px 12px;
+  }
+  .pp-title{font-size:clamp(1rem,4.5vw,1.4rem);}
+  .pp-back,.pp-gear{width:50px;height:50px;font-size:1.5rem;}
+
+  /* Large portrait cards */
+  .pp-card{
+    width:min(240px,62vw);
+    height:min(370px,50vh);
+    border-radius:22px;
+    gap:12px;
+  }
+  .card-emoji{font-size:clamp(3rem,10vw,4.2rem);}
+  .card-name{font-size:clamp(.95rem,3.5vw,1.15rem);}
+  .pp-stamp{font-size:1.6rem;top:10px;right:12px;}
+  .pp-lock{font-size:1.2rem;top:10px;right:12px;}
+
+  /* Roomier footer */
+  .pp-footer{
+    min-height:90px;
+    padding:12px 18px max(env(safe-area-inset-bottom,18px),18px);
+  }
+  .pp-tino{font-size:2.2rem;}
+  .pp-tino-speaker{width:32px;height:32px;font-size:.88rem;}
+  .pp-tino-bubble{font-size:clamp(.84rem,3.2vw,.98rem);line-height:1.55;}
+
+  /* Gate + settings fit portrait screen */
+  .pp-gate{max-width:88vw;padding:24px 28px;}
+  .pp-gate-q{font-size:clamp(1.1rem,4.5vw,1.5rem);}
+  .pp-gate-opt{width:62px;height:62px;font-size:1.3rem;}
+  .pp-settings-panel{max-width:88vw;}
+  .pp-setting-label{font-size:clamp(.88rem,3.5vw,1rem);}
 }
 </style>
 </head>
