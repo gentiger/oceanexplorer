@@ -43,36 +43,230 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 }
 .overlay.show{display:flex}
 
-/* ── PASSPORT ── */
+/* ── PASSPORT CAROUSEL ── */
 #oPassport{
   background:linear-gradient(160deg,#0A4E68 0%,#117B9B 50%,#0A4E68 100%);
-  flex-direction:column;gap:0;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
 }
-.passport-book{
+.pp-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;
+  background:rgba(10,64,80,.45);
+  flex-shrink:0;min-height:50px;
+}
+.pp-back,.pp-gear{
+  position:relative;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,241,220,.12);border:2px solid rgba(255,241,220,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;cursor:pointer;flex-shrink:0;
+  transition:background .2s;
+}
+.pp-back:hover,.pp-back:active,
+.pp-gear:hover,.pp-gear:active{background:rgba(255,241,220,.26)}
+/* 200% hitbox via pseudo-element */
+.pp-back::before,.pp-gear::before{
+  content:'';position:absolute;inset:-14px;border-radius:50%;
+}
+.pp-title{
+  color:#FFF1DC;font-size:clamp(.8rem,1.8vw,1.1rem);
+  text-align:center;flex:1;padding:0 8px;
+}
+.pp-stage{
+  flex:1;min-height:0;
+  overflow:hidden;
+  position:relative;
+  display:flex;align-items:center;
+}
+.pp-track{
+  display:flex;gap:20px;
+  position:absolute;left:0;top:50%;
+  transform:translateY(-50%);
+  transition:transform .38s cubic-bezier(.4,0,.2,1);
+}
+.pp-card{
+  width:170px;height:240px;
+  max-height:92%;
+  flex-shrink:0;
+  border-radius:18px;
+  border:3px solid #2E4C33;
   background:#FFF1DC;
-  border:4px solid #2E4C33;
-  border-radius:10px 22px 22px 10px;
-  padding:28px 38px 32px;
-  text-align:center;
-  box-shadow:12px 12px 40px rgba(0,0,0,.4),inset 0 0 60px rgba(255,241,220,.2);
-  max-width:400px;width:88%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:8px;
+  cursor:pointer;
+  position:relative;
+  transition:transform .25s,opacity .25s;
+  overflow:hidden;
 }
-.p-title{color:#2E4C33;font-size:clamp(1.4rem,4vw,2.1rem);line-height:1.2}
-.p-sub{
-  color:#117B9B;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;margin:8px 0 14px;
+.pp-card.locked{
+  background:rgba(255,241,220,.35);
+  border-color:rgba(46,76,51,.25);
+}
+.card-emoji{font-size:clamp(2rem,3.5vw,2.8rem);line-height:1.1;}
+.pp-card.locked .card-emoji{filter:grayscale(1) opacity(.5);}
+.card-name{
+  color:#2E4C33;font-size:clamp(.72rem,1.4vw,.9rem);
+  text-align:center;padding:0 6px;
+}
+.pp-card.locked .card-name{color:rgba(46,76,51,.4);}
+.pp-stamp{
+  position:absolute;top:7px;right:9px;
+  font-size:1.3rem;line-height:1;
+}
+.pp-lock{
+  position:absolute;top:7px;right:9px;
+  font-size:1rem;line-height:1;opacity:.6;
+}
+@keyframes ppWiggle{
+  0%,100%{left:0}
+  20%{left:-8px}40%{left:8px}
+  60%{left:-5px}80%{left:5px}
+}
+.pp-card.wiggling{animation:ppWiggle .5s ease;}
+.pp-footer{
+  padding:8px 14px 12px;
+  display:flex;align-items:flex-end;gap:8px;
+  flex-shrink:0;min-height:62px;
+}
+.pp-tino-wrap{
+  display:flex;flex-direction:column;
+  align-items:center;gap:3px;flex-shrink:0;
+}
+.pp-tino{font-size:clamp(1.6rem,3vw,2.2rem);line-height:1;cursor:pointer;}
+.pp-tino-speaker{
+  background:rgba(255,241,220,.18);border:1.5px solid rgba(255,241,220,.28);
+  border-radius:50%;width:26px;height:26px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;cursor:pointer;padding:0;
+  transition:background .2s;
+}
+.pp-tino-speaker:hover,.pp-tino-speaker:active{background:rgba(255,241,220,.32);}
+.pp-tino-bubble{
+  background:#FFF1DC;border-radius:14px 14px 14px 4px;
+  padding:8px 12px;color:#2E4C33;
   font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.7rem,1.1vw,.82rem);line-height:1.5;
+  box-shadow:0 3px 12px rgba(10,60,80,.28);
+  border:1px solid rgba(46,76,51,.1);
+  flex:1;max-width:480px;
+  transition:opacity .25s;
 }
-.p-emblem{font-size:clamp(3rem,8vw,4.5rem);margin:4px 0 14px}
-.p-desc{
-  color:#4A4A4A;font-size:.88rem;line-height:1.6;
+
+/* ── PARENT GATE MODAL (inside #oPassport) ── */
+#ppGateModal{
+  position:absolute;inset:0;
+  background:rgba(10,40,60,.86);
+  display:none;align-items:center;justify-content:center;
+  z-index:20;border-radius:14px;
+}
+#ppGateModal.show{display:flex;}
+.pp-gate{
+  background:#FFF1DC;border-radius:20px;
+  padding:clamp(18px,3vh,28px) clamp(20px,4vw,32px);
+  text-align:center;max-width:340px;width:88%;
+  border:3px solid #2E4C33;
+  box-shadow:0 8px 32px rgba(10,40,60,.5);
+}
+.pp-gate-q{color:#2E4C33;font-size:clamp(1rem,2.5vw,1.4rem);margin-bottom:4px;}
+.pp-gate-sub{
+  color:rgba(46,76,51,.6);
   font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.76rem,1.2vw,.88rem);margin-bottom:16px;
 }
-.p-tap{color:#117B9B;font-size:.9rem;margin-top:18px;animation:blink 1.6s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.pp-gate-opts{display:flex;gap:12px;justify-content:center;margin-bottom:14px;}
+.pp-gate-opt{
+  width:56px;height:56px;border-radius:50%;
+  background:#117B9B;color:#FFF1DC;
+  font-family:inherit;font-size:1.25rem;border:none;cursor:pointer;
+  transition:transform .15s,background .15s;
+  box-shadow:0 3px 10px rgba(17,123,155,.35);
+}
+.pp-gate-opt:hover,.pp-gate-opt:active{transform:scale(1.1);background:#0D6585;}
+.pp-gate-opt.wrong{background:#C06040;animation:ppWiggle .4s ease;}
+.pp-gate-divider{
+  color:rgba(46,76,51,.35);
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:.72rem;margin-bottom:10px;
+}
+.pp-gate-hold{
+  position:relative;overflow:hidden;
+  background:rgba(46,76,51,.08);
+  border:2px solid rgba(46,76,51,.18);
+  border-radius:30px;padding:11px 24px;
+  color:#2E4C33;
+  font-family:inherit;font-size:.86rem;
+  cursor:pointer;touch-action:none;
+  user-select:none;text-align:center;
+}
+.pp-gate-hold::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  background:rgba(46,76,51,.15);width:0%;transition:none;
+}
+.pp-gate-hold.pp-holding::after{width:100%;transition:width 3s linear;}
+.pp-gate-cancel{
+  display:block;margin:10px auto 0;
+  color:rgba(46,76,51,.45);
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:.76rem;cursor:pointer;background:none;border:none;
+}
+
+/* ── SETTINGS PANEL (inside #oPassport) ── */
+#ppSettings{
+  position:absolute;inset:0;
+  background:rgba(10,40,60,.9);
+  display:none;align-items:center;justify-content:center;
+  z-index:25;border-radius:14px;
+}
+#ppSettings.show{display:flex;}
+.pp-settings-panel{
+  background:#FFF1DC;border-radius:20px;
+  padding:clamp(18px,3vh,26px) clamp(20px,4vw,30px);
+  max-width:310px;width:88%;
+  border:3px solid #2E4C33;
+  box-shadow:0 8px 32px rgba(10,40,60,.5);
+}
+.pp-settings-title{color:#2E4C33;font-size:clamp(.95rem,2vw,1.25rem);text-align:center;margin-bottom:16px;}
+.pp-setting-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid rgba(46,76,51,.1);
+}
+.pp-setting-row:last-of-type{border-bottom:none;}
+.pp-setting-label{
+  color:#2E4C33;
+  font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
+  font-size:clamp(.8rem,1.4vw,.92rem);
+}
+.pp-toggle{
+  width:44px;height:24px;
+  background:rgba(46,76,51,.2);
+  border-radius:12px;position:relative;cursor:pointer;
+  transition:background .22s;flex-shrink:0;
+}
+.pp-toggle.on{background:#117B9B;}
+.pp-toggle::after{
+  content:'';position:absolute;
+  width:18px;height:18px;background:#FFF1DC;border-radius:50%;
+  top:3px;left:3px;
+  transition:left .22s;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.pp-toggle.on::after{left:23px;}
+.pp-settings-close{
+  margin-top:16px;width:100%;
+  background:#117B9B;color:#FFF1DC;border:none;
+  padding:11px 24px;border-radius:30px;
+  font-size:.92rem;font-family:inherit;cursor:pointer;
+  box-shadow:0 3px 10px rgba(17,123,155,.35);
+  transition:transform .15s,box-shadow .15s;
+}
+.pp-settings-close:hover,.pp-settings-close:active{transform:scale(1.04);}
 
 /* ── HUD ── */
 #hud{
-  position:absolute;top:10px;left:12px;
+  position:absolute;top:10px;left:68px;
   display:none;gap:8px;align-items:center;z-index:10;
 }
 #hud.show{display:flex}
@@ -85,7 +279,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 }
 .slot.on{background:rgba(78,250,150,.2);border-color:#4EFA96;box-shadow:0 0 14px rgba(78,250,150,.5)}
 #shellBtn{
-  position:absolute;top:8px;right:10px;
+  position:absolute;top:8px;left:10px;
   width:50px;height:50px;border-radius:50%;
   background:rgba(255,241,220,.12);border:2px solid rgba(255,241,220,.25);
   display:none;align-items:center;justify-content:center;
@@ -94,7 +288,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 #shellBtn:hover,#shellBtn:active{background:rgba(255,241,220,.26)}
 #shellBtn.show{display:flex}
 
-/* ── TINO BUBBLE ── */
+/* ── TINO BUBBLE (game state) ── */
 #tinoPanel{
   position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
   display:none;align-items:flex-end;gap:8px;
@@ -156,7 +350,6 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   grid-template-rows:1fr auto auto;
   width:100%;height:100%;gap:0;
 }
-/* Left panel: teal with animated avatar */
 .fact-left{
   grid-column:1;grid-row:1 / span 3;
   background:linear-gradient(180deg,#1A90AE 0%,#117B9B 60%,#0D6585 100%);
@@ -177,7 +370,6 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   color:rgba(255,241,220,.55);font-size:.75rem;font-style:italic;text-align:center;
   font-family:'Quicksand','Arial Rounded MT Bold',sans-serif;font-weight:600;
 }
-/* Right panel: cream card */
 .fact-right{
   grid-column:2;grid-row:1;
   background:#FFF1DC;
@@ -224,7 +416,6 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   padding:clamp(8px,1.2vh,12px) clamp(12px,2vh,18px);
 }
 
-/* Portrait / narrow: stack panels */
 @media(max-width:560px){
   .fact-inner{grid-template-columns:1fr;grid-template-rows:auto auto auto auto}
   .fact-left{grid-column:1;grid-row:1;padding:16px}
@@ -289,6 +480,10 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   #oStamp{gap:6px;padding:10px}
   #stampEmoji{font-size:2.5rem}
   .stamp-p{font-size:.78rem}
+  .pp-card{width:120px;height:170px;}
+  .card-emoji{font-size:1.8rem;}
+  .pp-bar{min-height:38px;padding:6px 10px;}
+  .pp-footer{min-height:48px;padding:5px 10px;}
 }
 </style>
 </head>
@@ -296,14 +491,84 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
 <div id="wrapper">
   <canvas id="c"></canvas>
 
-  <!-- PASSPORT -->
+  <!-- PASSPORT CAROUSEL -->
   <div class="overlay show" id="oPassport">
-    <div class="passport-book" id="passportBook">
-      <div class="p-title">🌊 Junior Ocean<br>Passport</div>
-      <div class="p-sub">Ocean Explorers · Vol. 1</div>
-      <div class="p-emblem">🐠</div>
-      <div class="p-desc">Discover the secrets of the coral reef<br>with Tino the Turtle!</div>
-      <div class="p-tap">Tap anywhere to begin ›</div>
+    <div class="pp-bar">
+      <div class="pp-back" id="ppBack" title="Back">🐚</div>
+      <div class="pp-title">🌊 My Ocean Passport</div>
+      <div class="pp-gear" id="ppGear" title="Settings">⚙️</div>
+    </div>
+    <div class="pp-stage" id="ppStage">
+      <div class="pp-track" id="ppTrack">
+        <div class="pp-card" id="ppCard0" data-index="0">
+          <div class="pp-stamp">⭐</div>
+          <div class="card-emoji">🐠</div>
+          <div class="card-name">Clownfish</div>
+        </div>
+        <div class="pp-card locked" id="ppCard1" data-index="1">
+          <div class="pp-lock">🔒</div>
+          <div class="card-emoji">🐟</div>
+          <div class="card-name">Bluefin Tuna</div>
+        </div>
+        <div class="pp-card locked" id="ppCard2" data-index="2">
+          <div class="pp-lock">🔒</div>
+          <div class="card-emoji">🐙</div>
+          <div class="card-name">Octopus</div>
+        </div>
+        <div class="pp-card locked" id="ppCard3" data-index="3">
+          <div class="pp-lock">🔒</div>
+          <div class="card-emoji">🐡</div>
+          <div class="card-name">Pufferfish</div>
+        </div>
+        <div class="pp-card locked" id="ppCard4" data-index="4">
+          <div class="pp-lock">🔒</div>
+          <div class="card-emoji">🦈</div>
+          <div class="card-name">Shark</div>
+        </div>
+      </div>
+    </div>
+    <div class="pp-footer">
+      <div class="pp-tino-wrap">
+        <div class="pp-tino" id="ppTino">🐢</div>
+        <button class="pp-tino-speaker" id="ppTinoSpeaker" title="Replay">🔊</button>
+      </div>
+      <div id="ppTinoBubble" class="pp-tino-bubble">
+        Tap the Clownfish card to explore! 🐠
+      </div>
+    </div>
+    <!-- Parent Gate Modal -->
+    <div id="ppGateModal">
+      <div class="pp-gate">
+        <div class="pp-gate-q">🔐 Parent Check</div>
+        <div class="pp-gate-sub">Solve this to access settings: 5 + 2 = ?</div>
+        <div class="pp-gate-opts">
+          <button class="pp-gate-opt" data-val="6">6</button>
+          <button class="pp-gate-opt" data-val="7">7</button>
+          <button class="pp-gate-opt" data-val="8">8</button>
+        </div>
+        <div class="pp-gate-divider">— or hold the button below for 3 seconds —</div>
+        <div class="pp-gate-hold" id="ppHoldBtn">Hold to unlock ⏳</div>
+        <button class="pp-gate-cancel" id="ppGateCancel">✕ Cancel</button>
+      </div>
+    </div>
+    <!-- Settings Panel -->
+    <div id="ppSettings">
+      <div class="pp-settings-panel">
+        <div class="pp-settings-title">⚙️ Settings</div>
+        <div class="pp-setting-row">
+          <span class="pp-setting-label">🔊 Sound Effects</span>
+          <div class="pp-toggle on" id="togSfx"></div>
+        </div>
+        <div class="pp-setting-row">
+          <span class="pp-setting-label">🎵 Background Music</span>
+          <div class="pp-toggle on" id="togMusic"></div>
+        </div>
+        <div class="pp-setting-row">
+          <span class="pp-setting-label">🌐 Language</span>
+          <span class="pp-setting-label" style="color:#117B9B">English ›</span>
+        </div>
+        <button class="pp-settings-close" id="ppSettingsClose">Done ✓</button>
+      </div>
     </div>
   </div>
 
@@ -313,7 +578,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
     <div class="slot" id="s1">🦐</div>
     <div class="slot" id="s2">🦐</div>
   </div>
-  <div id="shellBtn" title="Help">🐚</div>
+  <div id="shellBtn" title="Home">🐚</div>
 
   <!-- INTRO BUBBLE -->
   <div id="introBubble">
@@ -325,7 +590,7 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   </div>
   <div id="tapHint">👆 Tap me!</div>
 
-  <!-- TINO SPEECH BUBBLE -->
+  <!-- TINO SPEECH BUBBLE (game) -->
   <div id="tinoPanel">
     <div class="tino-av">🐢</div>
     <div class="tino-bub" id="tinoTxt"></div>
@@ -423,6 +688,59 @@ const PARTICLES=[];
 const $=id=>document.getElementById(id);
 const SLOTS=[$('s0'),$('s1'),$('s2')];
 
+// ── PASSPORT CAROUSEL STATE ──
+let ppCurrentCard = 0;
+let ppPrevOverlay = 'fact';
+let ppLastTinoMsg = "Tap the Clownfish card to explore! 🐠";
+let ppHoldTimer = null;
+
+const CARD_GAP = 20;
+
+const TEASERS = [
+  null,
+  "Ooh! That's the speedy Bluefin Tuna! We'll explore the open ocean very soon! 🐟",
+  "Wow, the incredible Octopus — eight arms and a genius brain! Coming soon! 🐙",
+  "The Pufferfish can blow up like a balloon to scare off predators! Coming soon! 🐡",
+  "Sharks are the ocean's guardians — very important! We'll meet one soon! 🦈",
+];
+
+function ppShowTinoMsg(msg) {
+  ppLastTinoMsg = msg;
+  $('ppTinoBubble').textContent = msg;
+}
+
+function ppUpdateCarousel() {
+  const stage = $('ppStage');
+  const card0 = $('ppCard0');
+  if (!stage || !card0) return;
+  const stageW = stage.offsetWidth || 900;
+  const cardW  = card0.offsetWidth  || 170;
+  const center = (stageW - cardW) / 2;
+  const offset = center - ppCurrentCard * (cardW + CARD_GAP);
+  $('ppTrack').style.transform = `translateX(${offset}px) translateY(-50%)`;
+  for (let i = 0; i < 5; i++) {
+    const card = $('ppCard' + i);
+    const dist = Math.abs(i - ppCurrentCard);
+    const scale   = dist === 0 ? 1 : dist === 1 ? 0.88 : 0.78;
+    const opacity = dist === 0 ? 1 : dist === 1 ? 0.65 : 0.40;
+    card.style.transform = `scale(${scale})`;
+    card.style.opacity   = opacity;
+  }
+}
+
+function ppCancelHold() {
+  clearTimeout(ppHoldTimer);
+  ppHoldTimer = null;
+  $('ppHoldBtn').classList.remove('pp-holding');
+}
+
+function openSettings() {
+  ppCancelHold();
+  $('ppGateModal').classList.remove('show');
+  $('ppSettings').classList.add('show');
+}
+
+// ── OVERLAY MANAGER ──
 function hideIntroBubble(){
   $('introBubble').classList.remove('show');
   $('tapHint').classList.remove('show');
@@ -433,10 +751,17 @@ function showOverlay(name){
   $('hud').classList.remove('show');
   $('shellBtn').classList.remove('show');
   hideTino(); hideIntroBubble();
-  if(name==='passport'){$('oPassport').classList.add('show');state='passport';}
-  else if(name==='stamp'){$('oStamp').classList.add('show');state='stamp';}
-  else if(name==='fact'){$('oFact').classList.add('show');state='fact';}
-  else{$('hud').classList.add('show');$('shellBtn').classList.add('show');state=name;}
+  if(name==='passport'){
+    $('oPassport').classList.add('show');
+    state='passport';
+    ppUpdateCarousel();
+  } else if(name==='stamp'){
+    $('oStamp').classList.add('show');state='stamp';
+  } else if(name==='fact'){
+    $('oFact').classList.add('show');state='fact';
+  } else {
+    $('hud').classList.add('show');$('shellBtn').classList.add('show');state=name;
+  }
 }
 
 function updateHUD(){SLOTS.forEach((s,i)=>s.classList.toggle('on',PL[i].eaten));}
@@ -458,7 +783,6 @@ function canvasXY(e){
 function onInput(e){
   if(e.cancelable) e.preventDefault();
   const p=canvasXY(e);
-  if(state==='passport'){startIntro();return;}
   if(state==='intro'){
     if(iStep>=1){const dx=p.x-490,dy=p.y-260;if(dx*dx+dy*dy<80*80)startGame();}
     return;
@@ -472,11 +796,104 @@ function onInput(e){
 
 canvas.addEventListener('click',onInput);
 canvas.addEventListener('touchstart',onInput,{passive:false});
-$('oPassport').addEventListener('click',()=>{if(state==='passport')startIntro();});
-$('shellBtn').addEventListener('click',()=>{showTino("You're doing great! Look for the glowing zooplankton and tap near them to eat! 🦐");});
+
+// ── PASSPORT EVENT HANDLERS ──
+$('ppBack').addEventListener('click', () => {
+  if (ppPrevOverlay === 'game') showOverlay('game');
+  else if (ppPrevOverlay === 'intro') startIntro();
+  else showOverlay('fact');
+});
+
+$('ppGear').addEventListener('click', () => {
+  $('ppGateModal').classList.add('show');
+});
+
+$('ppGateCancel').addEventListener('click', () => {
+  ppCancelHold();
+  $('ppGateModal').classList.remove('show');
+});
+
+document.querySelectorAll('.pp-gate-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    if (parseInt(this.dataset.val) === 7) {
+      openSettings();
+    } else {
+      this.classList.add('wrong');
+      setTimeout(() => this.classList.remove('wrong'), 600);
+    }
+  });
+});
+
+const ppHoldBtn = $('ppHoldBtn');
+ppHoldBtn.addEventListener('pointerdown', () => {
+  ppHoldBtn.classList.add('pp-holding');
+  ppHoldTimer = setTimeout(openSettings, 3000);
+});
+ppHoldBtn.addEventListener('pointerup', ppCancelHold);
+ppHoldBtn.addEventListener('pointerleave', ppCancelHold);
+
+$('ppSettingsClose').addEventListener('click', () => {
+  $('ppSettings').classList.remove('show');
+});
+
+['togSfx','togMusic'].forEach(id => {
+  $(id).addEventListener('click', function(){ this.classList.toggle('on'); });
+});
+
+$('ppTinoSpeaker').addEventListener('click', () => ppShowTinoMsg(ppLastTinoMsg));
+$('ppTino').addEventListener('click', () => ppShowTinoMsg(ppLastTinoMsg));
+
+// Card taps
+for (let i = 0; i < 5; i++) {
+  (function(idx) {
+    $('ppCard' + idx).addEventListener('click', function() {
+      const card = this;
+      if (idx !== ppCurrentCard) {
+        ppCurrentCard = idx;
+        ppUpdateCarousel();
+      }
+      if (card.classList.contains('locked')) {
+        card.classList.remove('wiggling');
+        void card.offsetWidth;
+        card.classList.add('wiggling');
+        card.addEventListener('animationend', () => card.classList.remove('wiggling'), {once:true});
+        if (TEASERS[idx]) ppShowTinoMsg(TEASERS[idx]);
+      } else {
+        card.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+          card.style.transform = '';
+          ppUpdateCarousel();
+          showOverlay('fact');
+          resetFactPopup();
+        }, 200);
+      }
+    });
+  })(i);
+}
+
+// Swipe
+let ppTouchStartX = 0;
+$('ppStage').addEventListener('touchstart', e => {
+  ppTouchStartX = e.touches[0].clientX;
+}, {passive:true});
+$('ppStage').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - ppTouchStartX;
+  if (Math.abs(dx) > 40) {
+    ppCurrentCard = Math.max(0, Math.min(4, ppCurrentCard + (dx < 0 ? 1 : -1)));
+    ppUpdateCarousel();
+  }
+});
+
+// ── SHELL BUTTON (game HUD) ──
+$('shellBtn').addEventListener('click', () => {
+  ppPrevOverlay = state;
+  showOverlay('passport');
+});
+
+// ── OTHER SCREEN HANDLERS ──
 $('btnCard').addEventListener('click',()=>{showOverlay('fact');resetFactPopup();});
-$('btnAgain').addEventListener('click',()=>{resetAll();showOverlay('intro');startIntro();});
-$('btnPassport').addEventListener('click',()=>{showOverlay('passport');});
+$('btnAgain').addEventListener('click',()=>{resetAll();startIntro();});
+$('btnPassport').addEventListener('click',()=>{ppPrevOverlay='fact';showOverlay('passport');});
 
 function startIntro(){iFrame=0;iStep=0;hideIntroBubble();showOverlay('intro');}
 function startGame(){hideTino();showOverlay('game');setTimeout(()=>showTino("Find the glowing zooplankton and tap near them to eat! 🦐",4500),600);}
@@ -590,7 +1007,6 @@ function update(){
 //  DRAW — sunlit Indo-Pacific reef
 // ══════════════════════════════════════════════
 function drawBG(){
-  // Crystal-clear sunlit shallow water
   const g=ctx.createLinearGradient(0,0,0,H);
   g.addColorStop(0,'#56C8DE');
   g.addColorStop(.22,'#2AAAC2');
@@ -599,7 +1015,6 @@ function drawBG(){
   g.addColorStop(1,'#0A4E68');
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-  // God rays — warm cream light from surface
   ctx.save();
   for(let i=0;i<9;i++){
     const rx=50+i*108+28*Math.sin(frame*.007+i*.8);
@@ -612,7 +1027,6 @@ function drawBG(){
   }
   ctx.restore();
 
-  // Sandy bottom — warm cream sand
   const sg=ctx.createLinearGradient(0,H-65,0,H);
   sg.addColorStop(0,'#EAD8A8');sg.addColorStop(1,'#C8A870');
   ctx.fillStyle=sg;
@@ -648,22 +1062,17 @@ function seaweed(x,y,col,h,seed){
 }
 
 function drawCoral(){
-  // Left — warm staghorn coral
   coralBranch(75,H-52,'#D97050',3,65);
   coralBranch(115,H-58,'#E08050',3,55);
-  // Right — soft rose branching coral
   coralBranch(710,H-52,'#C06878',4,68);
   coralBranch(755,H-52,'#A85868',3,58);
   coralBranch(800,H-48,'#B86878',3,50);
-  // Middle — teal fan + soft lavender
   coralBranch(380,H-50,'#2A9898',2,42);
   coralBranch(565,H-52,'#7860B0',3,58);
-  // Rocks — warm-toned
   ctx.fillStyle='#4A5860';
   ctx.beginPath();ctx.ellipse(320,H-28,55,18,0,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#384858';
   ctx.beginPath();ctx.ellipse(640,H-24,48,14,0,0,Math.PI*2);ctx.fill();
-  // Seaweed
   seaweed(258,H-52,'#2E7840',52,0);
   seaweed(288,H-52,'#3A9050',62,1);
   seaweed(500,H-52,'#287038',46,2);
@@ -686,7 +1095,6 @@ function drawAnemone(glowing){
   const x=AN.x,y=AN.y,t=frame*.042;
   if(glowing){
     ctx.save();
-    // #4EFA96 — the spec's "Safety Zone" glowing anemone green
     ctx.shadowColor='#4EFA96';ctx.shadowBlur=32+12*Math.sin(t*3);
     ctx.globalAlpha=.5+.12*Math.sin(t*3);
     ctx.fillStyle='#4EFA96';
@@ -695,7 +1103,6 @@ function drawAnemone(glowing){
   }
   ctx.fillStyle='#2E4C33';
   ctx.beginPath();ctx.ellipse(x,y+8,48,14,0,0,Math.PI*2);ctx.fill();
-  // Tentacles — warm tropical mauve
   const cols=['#A848A0','#904890','#C068B8','#9858A8','#B060A8'];
   for(let i=0;i<10;i++){
     const a=(i/10)*Math.PI*2;
@@ -716,21 +1123,17 @@ function drawPlankton(x,y,phase){
   const t=frame*.05+phase;
   const gv=.5+.5*Math.sin(t*1.8);
   ctx.save();
-  // #5CE1E6 — spec's "Feeding Glow" bioluminescent cyan
   ctx.globalAlpha=.2+.12*gv;ctx.fillStyle='#5CE1E6';
   ctx.beginPath();ctx.arc(x,y,30,0,Math.PI*2);ctx.fill();
   ctx.globalAlpha=.38+.18*gv;ctx.fillStyle='#7AE8ED';
   ctx.beginPath();ctx.arc(x,y,20,0,Math.PI*2);ctx.fill();
   ctx.restore();
-
   ctx.fillStyle='#BAFBFF';
   ctx.beginPath();ctx.ellipse(x,y,12,7,t*.28,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#5CE1E6';ctx.lineWidth=1.5;ctx.stroke();
-
   ctx.strokeStyle='#5CE1E6';ctx.lineWidth=1.2;
   ctx.beginPath();ctx.moveTo(x-5,y-5);ctx.lineTo(x-13,y-13+Math.sin(t*2)*3);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x+5,y-5);ctx.lineTo(x+13,y-13+Math.sin(t*2+1)*3);ctx.stroke();
-
   ctx.save();ctx.globalAlpha=.4+.28*gv;
   for(let i=0;i<4;i++){
     const ba=(i/4)*Math.PI*2+t;
@@ -748,42 +1151,35 @@ function drawClown(x,y,dir,hiding){
   const bob=Math.sin(frame*.052)*2.2;
   ctx.translate(0,bob);
   if(hiding){ctx.scale(.72,.72);ctx.globalAlpha=.85;}
-
   ctx.fillStyle='#B84010';
   ctx.beginPath();
   ctx.moveTo(-27,0);
   ctx.lineTo(-46,-16+Math.sin(frame*.16)*5.5);
   ctx.lineTo(-46, 16-Math.sin(frame*.16)*5.5);
   ctx.closePath();ctx.fill();
-
   const bg=ctx.createRadialGradient(4,-2,4,0,0,28);
   bg.addColorStop(0,'#E07828');bg.addColorStop(1,'#B03800');
   ctx.fillStyle=bg;
   ctx.beginPath();ctx.ellipse(0,0,28,15,0,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#200800';ctx.lineWidth=2;
   ctx.beginPath();ctx.ellipse(0,0,28,15,0,0,Math.PI*2);ctx.stroke();
-
   ctx.fillStyle='#FFF1DC';ctx.strokeStyle='#200800';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.ellipse(9,0,3.5,15,0,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.beginPath();ctx.ellipse(-8,0,3.5,14,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-
   ctx.fillStyle='#C84808';
   ctx.beginPath();
   ctx.moveTo(-10,-15);ctx.lineTo(12,-15);
   ctx.lineTo(16,-27+Math.sin(frame*.09)*2);
   ctx.lineTo(-5,-27+Math.sin(frame*.09)*2);
   ctx.closePath();ctx.fill();
-
   ctx.fillStyle='#FFF1DC';
   ctx.beginPath();ctx.arc(16,-4,8,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#180600';
   ctx.beginPath();ctx.arc(18,-3,5,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#FFF1DC';
   ctx.beginPath();ctx.arc(19.5,-4.5,2,0,Math.PI*2);ctx.fill();
-
   ctx.strokeStyle='#200800';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(24,2,4.5,.25,Math.PI-.25);ctx.stroke();
-
   ctx.fillStyle='rgba(160,55,0,.58)';
   ctx.beginPath();ctx.ellipse(0,12,10,5,-.35,0,Math.PI*2);ctx.fill();
   ctx.restore();
@@ -794,29 +1190,24 @@ function drawGrouper(x,y,dir){
   ctx.translate(x,y);ctx.scale(dir,1);
   const bob=Math.sin(frame*.042)*3.2;
   ctx.translate(0,bob);
-
   ctx.fillStyle='#6A2E18';
   ctx.beginPath();
   ctx.moveTo(-58,0);
   ctx.lineTo(-78,-24+Math.sin(frame*.11)*7);
   ctx.lineTo(-78, 24-Math.sin(frame*.11)*7);
   ctx.closePath();ctx.fill();
-
   const bg=ctx.createRadialGradient(8,0,10,0,0,56);
   bg.addColorStop(0,'#9E5028');bg.addColorStop(1,'#6A2E18');
   ctx.fillStyle=bg;
   ctx.beginPath();ctx.ellipse(0,0,56,31,0,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#300E08';ctx.lineWidth=2;
   ctx.beginPath();ctx.ellipse(0,0,56,31,0,0,Math.PI*2);ctx.stroke();
-
   ctx.fillStyle='rgba(0,0,0,.14)';
   for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(-20+i*10,-9+(i%2)*18,9,6,0,0,Math.PI*2);ctx.fill();}
-
   ctx.fillStyle='#6A2E18';
   ctx.beginPath();ctx.moveTo(-30,-30);ctx.lineTo(18,-30);ctx.lineTo(22,-46);ctx.lineTo(-12,-46);ctx.closePath();ctx.fill();
   ctx.strokeStyle='#300E08';ctx.lineWidth=1.5;
   for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(-20+i*12,-30);ctx.lineTo(-18+i*11,-44);ctx.stroke();}
-
   ctx.fillStyle='#FFF1DC';
   ctx.beginPath();ctx.arc(36,-9,10,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#180600';
@@ -825,7 +1216,6 @@ function drawGrouper(x,y,dir){
   ctx.beginPath();ctx.arc(39.5,-9,2,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#200800';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(27,-18);ctx.lineTo(46,-15);ctx.stroke();
-
   ctx.fillStyle='#200808';
   ctx.beginPath();ctx.arc(50,6,9,0,Math.PI);ctx.fill();
   ctx.strokeStyle='#180808';ctx.lineWidth=2;
@@ -838,8 +1228,6 @@ function drawTino(x,y){
   ctx.translate(x,y);
   const bob=Math.sin(frame*.042)*4;
   ctx.translate(0,bob);
-
-  // Shell — #2E4C33 is spec's "Tino's Deep Shell" colour
   const sg=ctx.createRadialGradient(0,-4,8,0,0,40);
   sg.addColorStop(0,'#4A7830');sg.addColorStop(1,'#2E4C33');
   ctx.fillStyle=sg;ctx.strokeStyle='#1C3020';ctx.lineWidth=2;
@@ -850,7 +1238,6 @@ function drawTino(x,y){
   ctx.beginPath();ctx.ellipse(14,-12,9,6, .5,0,Math.PI*2);ctx.fill();
   ctx.beginPath();ctx.ellipse(-12,8,7,5,-.3,0,Math.PI*2);ctx.fill();
   ctx.beginPath();ctx.ellipse(12,8,7,5, .3,0,Math.PI*2);ctx.fill();
-
   ctx.fillStyle='#58A030';ctx.strokeStyle='#2E4C33';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(34,-8,18,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.fillStyle='#FFF1DC';
@@ -861,7 +1248,6 @@ function drawTino(x,y){
   ctx.beginPath();ctx.arc(43,-13,1.8,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='#1C3020';ctx.lineWidth=2;
   ctx.beginPath();ctx.arc(42,-3,6,.2,Math.PI-.2);ctx.stroke();
-
   ctx.fillStyle='#4A9028';ctx.strokeStyle='#2E4C33';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.ellipse(18,18+Math.sin(frame*.055)*6,19,8,.55,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.beginPath();ctx.ellipse(-22,20,15,7,.3,0,Math.PI*2);ctx.fill();ctx.stroke();
@@ -870,7 +1256,6 @@ function drawTino(x,y){
 
 function drawDanger(){
   if(danger<=0) return;
-  // #E39B32 — spec's "Suspense Overlay" warm amber orange
   const a=danger*(.13+.07*Math.sin(frame*.22));
   const g=ctx.createRadialGradient(W/2,H/2,H*.28,W/2,H/2,W*.72);
   g.addColorStop(0,'rgba(227,155,50,0)');
@@ -950,6 +1335,12 @@ function loop(){
   requestAnimationFrame(loop);
 }
 loop();
+
+// Initialize carousel after DOM + layout is ready
+requestAnimationFrame(() => {
+  ppUpdateCarousel();
+  ppShowTinoMsg("Tap the Clownfish card to explore! 🐠");
+});
 </script>
 </body>
 </html>
