@@ -1336,11 +1336,11 @@ function loop(){
 }
 loop();
 
-// Initialize carousel after DOM + layout is ready
-requestAnimationFrame(() => {
-  ppUpdateCarousel();
-  ppShowTinoMsg("Tap the Clownfish card to explore! 🐠");
-});
+// Initialize carousel — suppress transition for first positioning
+$('ppTrack').style.transition = 'none';
+ppUpdateCarousel();
+requestAnimationFrame(() => { $('ppTrack').style.transition = ''; });
+ppShowTinoMsg("Tap the Clownfish card to explore! 🐠");
 </script>
 </body>
 </html>
