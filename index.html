@@ -31,18 +31,11 @@ body{
 }
 canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;touch-action:none}
 
-/* ── ROTATE PROMPT (portrait phones/tablets) ── */
-#rotateMsg{
-  display:none;position:fixed;inset:0;
-  background:#020d1a;color:#fff;
-  flex-direction:column;align-items:center;justify-content:center;
-  z-index:9999;text-align:center;padding:28px;gap:20px;
+/* ── PORTRAIT: top-align the game so it sits at the top of a tall phone screen ── */
+@media(orientation:portrait){
+  body{align-items:flex-start}
+  #wrapper{margin-top:max(env(safe-area-inset-top,0px),8px)}
 }
-.r-icon{font-size:4.5rem;animation:spin90 2s ease-in-out infinite}
-@keyframes spin90{0%,100%{transform:rotate(0deg)}45%,55%{transform:rotate(90deg)}}
-.r-title{font-size:1.25rem;font-weight:900;color:#f5d060;line-height:1.3}
-.r-sub{font-size:.9rem;color:#a8d8b8;line-height:1.6}
-@media(orientation:portrait) and (max-width:900px){#rotateMsg{display:flex}}
 
 /* ── OVERLAY BASE ── */
 .overlay{
@@ -334,12 +327,6 @@ canvas{width:100%;height:100%;display:block;border-radius:14px;cursor:pointer;to
   </div>
 </div>
 
-<!-- ROTATE OVERLAY — shown on portrait phones via CSS media query -->
-<div id="rotateMsg">
-  <div class="r-icon">📱</div>
-  <div class="r-title">Rotate Your Device! 🌊</div>
-  <div class="r-sub">Ocean Explorers plays best in<br><strong>landscape mode</strong> — turn your phone sideways 🐠</div>
-</div>
 
 <script>
 // ══════════════════════════════════════════════
